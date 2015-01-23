@@ -215,11 +215,14 @@
           <div class="form-group">
             <div class="col-md-1" > </div>
             <div class="col-md-2">
-              <label class="control-label" for="serverUrl">Server ES API URL:</label>
+              <label class="control-label" for="serverUrl">Searchisko API URL:</label>
             </div>
             <div class="col-md-6">
               <input class="form-control" type="text" id="serverUrl" autocomplete="on"
                 onChange="$(this).parent().parent().removeClass('has-error');" />
+            </div>
+            <div class="col-md-3" id="login-info">
+              <a href="https://sso-dev.jboss.org/login">Log In</a> | <a href="https://developer-dev.jboss.org/register.jspa">Register</a>
             </div>
           </div>
         </div>
@@ -300,7 +303,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-6" id="createdByDiv" >
                         <label class="col-md-4 control-label" for="employee">Created by: </label>
                         <div class="controls col-md-8">
                           <div class="radio" >
@@ -322,7 +325,7 @@
                       </div>
                     </div>
                     <br />
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="form-group">
                         <label class="col-md-4 control-label" for="employee">Projects/products filter: </label>
                         <div class="controls col-md-6">
@@ -343,7 +346,7 @@
                            <i class="icon-trash icon-lg"></i> Clear </a>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -367,7 +370,7 @@
                             <input type="radio" name="bucket" value="off" checked onClick="switchAvailablePresentationOptions(false);" />Nothing
                           </label>
                         </div>
-                        <div class="radio" >
+                        <div class="radio" id="employeeStatusDiv">
                           <label>
                             <input type="radio" name="bucket" value="employeeStatus" onClick="switchAvailablePresentationOptions(true);" />Red Hat employees vs. non-redhatters
                           </label>
@@ -478,8 +481,32 @@
       </fieldset>
       </form>
       <div id="blogsDiv" style="width: 100%; height: 600px;"></div>
+      <hr />
+      <div id="forumsDiv" style="width: 100%; height: 600px;"></div>
+      <hr />
+      <div id="articlesDiv" style="width: 100%; height: 600px;"></div>
+      <hr />
+      <div id="jiraDiv" style="width: 100%; height: 600px;"></div>
+      <hr />
+      <div id="mailingListDiv" style="width: 100%; height: 600px;"></div>
 
       <script type="text/javascript">
+
+      var statsConfig = {};
+
+      function initializeRoleBasedSettings() {
+
+        if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
+          $( "#employeeStatusDiv" ).show();
+          $( "#createdByDiv" ).show();
+          statsConfig.query="statsJBossOrgQueryWithAdminRole";
+        } else {
+          $( "#employeeStatusDiv" ).hide();
+          $( "#createdByDiv" ).hide();
+          statsConfig.query="statsJBossOrgQuery";
+        }
+
+      }
 
       function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
@@ -518,17 +545,8 @@
         $( "#toDate" ).datepicker(datepickerOptions);
 
         function drawGraphs() {
-          var data = {
-            "query" : {},
-            "aggs" : {
-              "firstLevel" : {
-                "date_histogram" : {
-                  "field" : "sys_created",
-                  "interval" : "month"
-                }
-              }
-            }
-          };
+
+          var urlParameters = "";
 
           var serverUrl = $( "#serverUrl" ).val();
 
@@ -540,140 +558,173 @@
           var bucketRadioVal = $('input[name=bucket]:checked', '#settings').val();
           var projectSelectedArr = $("#projectsSelect").select2("data");
           var authorsSelectedArr = $("#authorsSelect").select2("data");
+          var interval = $('input[name=interval]:checked', '#settings').val();
 
           if (bucketRadioVal!='off') {
+
+            urlParameters+="&second_level_aggregation=true";
 
             switch (bucketRadioVal) {
 
               case "employeeStatus" : 
-                data.aggs.firstLevel.aggs = {
-                  "secondLevel" : {
-                    "nested" : {
-                      "path" : "sys_authors.red_hat"
-                    },
-                    "aggs" : {
-                      "thirdLevel" : {
-                        "terms" : { "field" : "sys_authors.red_hat.employee" }
-                      }
-                    }
-                  }
-                }; break;
-              case "productStatus" :
-                data.aggs.firstLevel.aggs = {
-                  "secondLevel" : {
-                    "terms" : { "field" : "product" }
-                  }
-                }; break;
-              case "perAuthor" :
-                data.aggs.firstLevel.aggs = {
-                  "secondLevel" : {
-                    "nested" : {
-                      "path" : "sys_authors"
-                    },
-                    "aggs" : {
-                      "thirdLevel" : {
-                        "terms" : { "field" : "sys_authors.sys_contributor" }
-                      }
-                    }
-                  }
-                }; break;
-              case "perProject" :
-                data.aggs.firstLevel.aggs = {
-                  "secondLevel" : {
-                    "terms" : { "field" : "sys_project" }
-                  }
-                }; break;
+                urlParameters+="&employee_nonemployee_aggregation=true"; break;
+              case "productStatus" : 
+                urlParameters+="&product_project_aggregation=true"; break;
+              case "perAuthor" : 
+                urlParameters+="&sys_contributor_aggregation=true"; break;
+              case "perProject" : 
+                urlParameters+="&sys_project_aggregation=true"; break;
             }
 
           }
 
           if (fromDateField.val() || toDateField.val() || productRadioVal!='all' || employeeRadioVal != 'anyone'
             || projectSelectedArr.length>0 || authorsSelectedArr.length>0 ) {
-            var constant_score = {
-                "filter" : {
-                  "bool" : {
-                    "must" : [
-                    ]
-                  }
-                }
-              };
-
-            var mustArr = constant_score.filter.bool.must;
 
             if (fromDateField.val() || toDateField.val()) {
 
-              var condition = { "range" : { "sys_created" : {} } };
+              urlParameters+="&date_range_check=true";
 
               if (fromDateField.val()) {
-                condition.range.sys_created.gte = fromDateField.val()+"T00:00:00.000Z";
+                urlParameters+="&from_date="+fromDateField.val()+"T00:00:00.000Z";
               }
               if (toDateField.val()) {
-                condition.range.sys_created.lte = toDateField.val()+"T00:00:00.000Z";
+                urlParameters+="&to_date="+toDateField.val()+"T00:00:00.000Z";
               }
 
-              mustArr[mustArr.length] = condition;
             }
 
             
             if (productRadioVal !== undefined && productRadioVal!='all') {
-
-              var condition = { "term" : { "product" : productRadioVal } };
-              mustArr[mustArr.length] = condition;
+              urlParameters+="&is_product_check=true&is_product="+productRadioVal;
             }
 
             if (employeeRadioVal !== undefined && employeeRadioVal!='anyone') {
-
-              var condition = { "term" : { "sys_authors.red_hat.employee" : employeeRadioVal } };
-              mustArr[mustArr.length] = condition;
+              urlParameters+="&is_employee_check=true&is_employee="+employeeRadioVal;
             }
 
             if (projectSelectedArr.length>0 ) {
 
-              var idsArr = [];
-              for (var idx=0 ; idx < projectSelectedArr.length ; idx++ ) {
-                idsArr[idx] = projectSelectedArr[idx].id;
-              }
+              urlParameters += "&project_names_filter";
 
-              var condition = { "terms" : { "sys_project" : idsArr } };
-              mustArr[mustArr.length] = condition;
+              for (var idx=0 ; idx < projectSelectedArr.length ; idx++ ) {
+                urlParameters += "&sys_projects="+projectSelectedArr[idx].id;
+              }
 
             }
             
             if (authorsSelectedArr.length>0 ) {
 
+              urlParameters += "&sys_contributors_filter";
+
               var idsArr = [];
               for (var idx=0 ; idx < authorsSelectedArr.length ; idx++ ) {
-                idsArr[idx] = authorsSelectedArr[idx].id;
+                urlParameters += "&sys_contributors="+authorsSelectedArr[idx].id;
               }
-
-              var condition = { "nested" : { "path" : "sys_authors", "query" : { "terms" : { "sys_authors.sys_contributor" : idsArr } } } };
-              mustArr[mustArr.length] = condition;
 
             }
 
-            data.query.constant_score = constant_score;
-          } else {
-            data.query.match_all= {};
           }
-          data.aggs.firstLevel.date_histogram.interval = $('input[name=interval]:checked', '#settings').val();
+          
+          urlParameters+="&interval="+interval;
 
-          console.log(data);
+          console.log("URL PARAMETERS: "+urlParameters);
 
           $.ajax({
-            type: "POST",
-            url: serverUrl+'/data_jbossorg_blog/_search',
-            data: JSON.stringify(data),
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sys_type=blogpost'+urlParameters,
+            xhrFields : {withCredentials:true},
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(results) {
               console.log(results);
               if (results.aggregations.firstLevel.buckets.length) {
                 drawChart(results.aggregations.firstLevel.buckets,'blogsDiv','Number of blog posts.',
-                  data.aggs.firstLevel.date_histogram.interval, presentationRadioVal);
+                  interval, presentationRadioVal);
               } else {
                 var blogsDivRef = $('#blogsDiv');
                 blogsDivRef.empty();
                 blogsDivRef.html('<h3>No results for blogs posts report.</h3>');
+              }
+        
+            }
+          });
+
+          $.ajax({
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sys_type=forumthread'+urlParameters,
+            xhrFields : {withCredentials:true},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(results) {
+              console.log(results);
+              if (results.aggregations.firstLevel.buckets.length) {
+                drawChart(results.aggregations.firstLevel.buckets,'forumsDiv','Number of forum threads.',
+                  interval, presentationRadioVal);
+              } else {
+                var blogsDivRef = $('#forumsDiv');
+                blogsDivRef.empty();
+                blogsDivRef.html('<h3>No results for forum threads report.</h3>');
+              }
+        
+            }
+          });
+
+          $.ajax({
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sys_type=article'+urlParameters,
+            xhrFields : {withCredentials:true},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(results) {
+              console.log(results);
+              if (results.aggregations.firstLevel.buckets.length) {
+                drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of articles.',
+                  interval, presentationRadioVal);
+              } else {
+                var blogsDivRef = $('#articlesDiv');
+                blogsDivRef.empty();
+                blogsDivRef.html('<h3>No results for articles report.</h3>');
+              }
+        
+            }
+          });
+
+          $.ajax({
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sys_type=issue'+urlParameters,
+            xhrFields : {withCredentials:true},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(results) {
+              console.log(results);
+              if (results.aggregations.firstLevel.buckets.length) {
+                drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of jira issues.',
+                  interval, presentationRadioVal);
+              } else {
+                var blogsDivRef = $('#jiraDiv');
+                blogsDivRef.empty();
+                blogsDivRef.html('<h3>No results for JIRA report.</h3>');
+              }
+        
+            }
+          });
+
+          $.ajax({
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sys_type=mailing_list_message'+urlParameters,
+            xhrFields : {withCredentials:true},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(results) {
+              console.log(results);
+              if (results.aggregations.firstLevel.buckets.length) {
+                drawChart(results.aggregations.firstLevel.buckets,'mailingListDiv','Number of mails.',
+                  interval, presentationRadioVal);
+              } else {
+                var blogsDivRef = $('#mailListDiv');
+                blogsDivRef.empty();
+                blogsDivRef.html('<h3>No results for mailing list report.</h3>');
               }
         
             }
@@ -696,23 +747,8 @@
           //   }
           // });
 
-          /*$.ajax({
-            type: "GET",
-            url: serverUrl+'/data_jbossorg_jira/_search?source='+encodeURIComponent(JSON.stringify(data)),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(results) {
-              console.log(results);
-              if (results.facets.firstLevel.entries.length) {
-                drawChart(results.facets.firstLevel.entries,'jiraDiv','Number of new jira tasks.');  
-              } else {
-                var blogsDivRef = $('#jiraDiv');
-                blogsDivRef.empty();
-                blogsDivRef.html('<h3>No results for jira report.</h3>');
-              }
-            }
-          }); */
         }
+
 
         $("#projectsSelect").select2({ 
           "placeholder" : "None selected" ,
@@ -730,7 +766,7 @@
               // Getting sys_projects
               $.ajax({
                 type: "POST",
-                url: serverUrl+'/sys_projects/_search?size=5&_source_include=code,name',
+                url: serverUrl+'/v2/rest/sys/es/search/sys_projects/_search?size=5&_source_include=code,name',
                 data: JSON.stringify({
                   "query" : {
                     "filtered" : {
@@ -783,7 +819,7 @@
 
             $.ajax({
               type: "POST",
-              url: serverUrl+'/sys_contributors/_search?size=5&_source_include=code',
+              url: serverUrl+'/v2/rest/sys/es/search/sys_contributors/_search?size=5&_source_include=code',
               data: JSON.stringify(
                 {
                   "query" : { 
@@ -818,7 +854,35 @@
           var sv = getQueryVariable('serverUrl');
           if (sv) {
             $( "#serverUrl" ).val(sv);
+            statsConfig.serverUrl=sv;
           }
+
+          var loginDiv = $( "#login-info" );
+          $.ajax({
+            type: "GET",
+            url: statsConfig.serverUrl+'/v2/rest/auth/status?roles=a',
+            xhrFields:  { withCredentials: true },
+            success: function(results) {
+              console.log(results);
+              if (results.authenticated) {
+
+                $.ajax({
+                  type: "GET",
+                  url: 'https://sso-dev.jboss.org/logininfo',
+                  xhrFields:  { withCredentials: true },
+                  success: function(ssoResults) {
+                    loginDiv.html(ssoResults.part1+" | "+ssoResults.part2);
+                  }
+                });
+
+                statsConfig.userRoles=results.roles;
+                
+              }
+
+              initializeRoleBasedSettings();
+            }
+          });
+
         });
         
       </script>
