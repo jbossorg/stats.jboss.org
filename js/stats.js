@@ -35,11 +35,11 @@ function initializeRoleBasedSettings() {
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
     $( "#employeeStatusDiv" ).show();
     $( "#createdByDiv" ).show();
-    statsConfig.query="statsJBossOrgQueryWithAdminRole";
+    statsConfig.query="statistics_query_trusted_required";
   } else {
     $( "#employeeStatusDiv" ).hide();
     $( "#createdByDiv" ).hide();
-    statsConfig.query="statsJBossOrgQuery";
+    statsConfig.query="statistics_query_anonymous_access";
   }
 
   if(statsConfig.userRoles==null) {
