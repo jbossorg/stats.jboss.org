@@ -139,7 +139,7 @@ function drawGraphs() {
   urlParameters+="&interval="+interval;
 
   console.log("URL PARAMETERS: "+urlParameters);
-/*
+
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=blogpost'+urlParameters,
@@ -148,11 +148,12 @@ function drawGraphs() {
     dataType: "json",
     success: function(results) {
       console.log(results);
+      var blogsDivRef = $('#blogsDiv');
+      blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         drawChart(results.aggregations.firstLevel.buckets,'blogsDiv','Number of blog posts.',
-          interval, presentationRadioVal);
+          interval, presentationRadioVal,'blogs-csv-button');
       } else {
-        var blogsDivRef = $('#blogsDiv');
         blogsDivRef.empty();
         blogsDivRef.html('<h3>No results for blogs posts report.</h3>');
       }
@@ -168,13 +169,14 @@ function drawGraphs() {
     dataType: "json",
     success: function(results) {
       console.log(results);
+      var forumsDivRef = $('#forumsDiv');
+      forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         drawChart(results.aggregations.firstLevel.buckets,'forumsDiv','Number of forum threads.',
-          interval, presentationRadioVal);
+          interval, presentationRadioVal,'forums-csv-button');
       } else {
-        var blogsDivRef = $('#forumsDiv');
-        blogsDivRef.empty();
-        blogsDivRef.html('<h3>No results for forum threads report.</h3>');
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for forum threads report.</h3>');
       }
 
     }
@@ -188,13 +190,14 @@ function drawGraphs() {
     dataType: "json",
     success: function(results) {
       console.log(results);
+      var articlesDivRef = $('#articlesDiv');
+      articlesDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of articles.',
-          interval, presentationRadioVal);
+          interval, presentationRadioVal,'articles-csv-button');
       } else {
-        var blogsDivRef = $('#articlesDiv');
-        blogsDivRef.empty();
-        blogsDivRef.html('<h3>No results for articles report.</h3>');
+        articlesDivRef.empty();
+        articlesDivRef.html('<h3>No results for articles report.</h3>');
       }
 
     }
@@ -208,13 +211,14 @@ function drawGraphs() {
     dataType: "json",
     success: function(results) {
       console.log(results);
+      var jiraDivRef = $('#jiraDiv');
+      jiraDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of jira issues.',
-          interval, presentationRadioVal);
+          interval, presentationRadioVal,'jira-csv-button');
       } else {
-        var blogsDivRef = $('#jiraDiv');
-        blogsDivRef.empty();
-        blogsDivRef.html('<h3>No results for JIRA report.</h3>');
+        jiraDivRef.empty();
+        jiraDivRef.html('<h3>No results for JIRA report.</h3>');
       }
 
     }
@@ -228,18 +232,19 @@ function drawGraphs() {
     dataType: "json",
     success: function(results) {
       console.log(results);
+      var mlDivRef = $('#mailListDiv');
+      mlDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         drawChart(results.aggregations.firstLevel.buckets,'mailingListDiv','Number of mails.',
-          interval, presentationRadioVal);
+          interval, presentationRadioVal,'ml-csv-button');
       } else {
-        var blogsDivRef = $('#mailListDiv');
-        blogsDivRef.empty();
-        blogsDivRef.html('<h3>No results for mailing list report.</h3>');
+        mlDivRef.empty();
+        mlDivRef.html('<h3>No results for mailing list report.</h3>');
       }
 
     }
   });
-*/
+
 
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
     $.ajax({
@@ -254,7 +259,7 @@ function drawGraphs() {
         downloadsDivRef.parent().css('visibility','visible');
         if (results.aggregations.firstLevel.buckets.length) {
           drawChart(results.aggregations.firstLevel.buckets,'downloadsDiv','Number of downloads.',
-            interval, presentationRadioVal);
+            interval, presentationRadioVal,'dm-csv-button');
         } else {
           downloadsDivRef.empty();
           downloadsDivRef.html('<h3>No results for mailing list report.</h3>');
@@ -399,33 +404,37 @@ $( document ).ready(function() {
   }
 
   var loginDiv = $( "#login-info" );
-  $.ajax({
-    type: "GET",
-    url: statsConfig.serverUrl+'/v2/rest/auth/status?roles=a',
-    xhrFields:  { withCredentials: true },
-    success: function(results) {
-      console.log(results);
+  // $.ajax({
+  //   type: "GET",
+  //   url: statsConfig.serverUrl+'/v2/rest/auth/status?roles=a',
+  //   xhrFields:  { withCredentials: true },
+  //   success: function(results) {
+  //     console.log(results);
 
-      $.ajax({
-        type: "GET",
-        url: ssoUrl+'/logininfo?backurl='+document.URL,
-        xhrFields:  { withCredentials: true },
-        success: function(ssoResults) {
-          loginDiv.html(ssoResults.part1+" | "+ssoResults.part2);
-        }
-      });
+      // $.ajax({
+      //   type: "GET",
+      //   url: ssoUrl+'/logininfo?backurl='+document.URL,
+      //   xhrFields:  { withCredentials: true },
+      //   success: function(ssoResults) {
+      //     loginDiv.html(ssoResults.part1+" | "+ssoResults.part2);
+      //   }
+      // });
 
-      if (results.authenticated) {
-        statsConfig.userRoles=results.roles;
-      } else {
+      // if (results.authenticated) {
+      //   statsConfig.userRoles=results.roles;
+      // } else {
 
-      }
+      // }
+
+
+  //   },
+  //   error: function(jqXHR, textStatus, errorThrown ) {
+  //     alert('Please reload the page because SSO integration with Searchisko failed.');
+  //   }
+  // });
+
+  statsConfig.userRoles=["trusted","admin","provider"];
 
       initializeRoleBasedSettings();
-    },
-    error: function(jqXHR, textStatus, errorThrown ) {
-      alert('Please reload the page because SSO integration with Searchisko failed.');
-    }
-  });
 
 });

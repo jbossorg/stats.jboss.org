@@ -1,4 +1,4 @@
-function drawChart(data, divId, title, interval, chartType) {
+function drawChart(data, divId, title, interval, chartType, csvAnchorId) {
 
   var graphDateFormat = "%m/%Y";
   var calendarDateFormat = "MM/yyyy";
@@ -133,7 +133,7 @@ function drawChart(data, divId, title, interval, chartType) {
 
   }
 
-  createCSVDownload(results);
+  createCSVDownload(results,csvAnchorId);
 
 }
 
@@ -196,7 +196,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
   return transformedData;
 }
 
-function createCSVDownload(results) {
+function createCSVDownload(results, csvAnchorId) {
 
   var csvContent = '';
   for ( i=0, l=results.length ; i<l ; i++ ) {
@@ -213,7 +213,7 @@ function createCSVDownload(results) {
   window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
   var file = new Blob([csvContent]);
 
-  var a = document.getElementById("dm-csv-button");
+  var a = document.getElementById(csvAnchorId);
   a.href = window.URL.createObjectURL(file);
   a.download = 'results.csv';
 }
