@@ -142,7 +142,7 @@ function drawGraphs() {
   urlParameters+="&interval="+interval;
 
   console.log("URL PARAMETERS: "+urlParameters);
-/*
+
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=blogpost'+urlParameters,
@@ -246,10 +246,10 @@ function drawGraphs() {
       }
 
     }
-  });*/
+  });
 
 
-  if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
+  if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
     $.ajax({
       type: "GET",
       url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=jbossorg_dm_logs'+urlParameters,
