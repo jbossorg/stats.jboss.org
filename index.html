@@ -58,7 +58,13 @@
       </div>
       <div id="info-row" class="row">
         <div class="col-md-12">
-          <div class="alert alert-info alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> <b>Please note:</b> DCP didn't return any assigned roles, please login or refresh the page if you are already logged in to gain the full functionality. In case you don't have the right role please report to administrator.</div>
+          <div class="alert alert-info alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> Due to a known <a href="https://github.com/searchisko/searchisko/issues/247" >bug</a>, Searchisko integration with SSO currently doesn't work. Please follow these steps in order to use the site:
+            <ol>
+              <li>Login to SSO at <span id="infoSsoAddress" /></li>
+              <li>Open DCP's authentication status REST URL and refresh it till you get authenticated true and roles will contain "trusted" - <span id="infoServerAuthAddress" /></li>
+              <li>Choose any statistics criteria below and click 'Generate graphs' button</li>
+            </ol>
+          </div>
         </div>
       </div>
       <form id="settings" >
@@ -309,7 +315,7 @@
       </div>
       <div class="row">
         <div class="col-md-2 col-md-offset-5">
-          <a class="btn btn-primary btn-lg" onClick="if(checkIfServerUrlIsProvided()) drawGraphs();" >Generate graph</a>
+          <a class="btn btn-primary btn-lg" onClick="if(checkIfServerUrlIsProvided()) drawGraphs();" >Generate graphs</a>
         </div>
       </div>
       </fieldset>

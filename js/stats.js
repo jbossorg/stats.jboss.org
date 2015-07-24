@@ -32,7 +32,7 @@ function switchAvailablePresentationOptions(turnOnMultibucket) {
 
 function initializeRoleBasedSettings() {
 
-  if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
+  if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
     $( "#employeeStatusDiv" ).show();
     $( "#createdByDiv" ).show();
     statsConfig.query="statistics_query_trusted_required";
@@ -42,11 +42,14 @@ function initializeRoleBasedSettings() {
     statsConfig.query="statistics_query_anonymous_access";
   }
 
-  if(statsConfig.userRoles==null) {
-    $( "#info-row" ).show();
-  } else {
-    $( "#info-row" ).hide();
-  }
+  $( "#info-row" ).show();
+  $( "#infoSsoAddress" ).html('<a href="'+statsConfig.ssoUrl+'" target="_blank" >'+statsConfig.ssoUrl+'</a>');
+  $( "#infoServerAuthAddress" ).html('<a href="'+statsConfig.serverUrl+'/v2/rest/auth/status?roles=a" target="_blank" >'+statsConfig.serverUrl+'/v2/rest/auth/status</a>')
+  // if(statsConfig.userRoles==null) {
+  //   $( "#info-row" ).show();
+  // } else {
+  //   $( "#info-row" ).hide();
+  // }
 
 }
 
@@ -139,7 +142,7 @@ function drawGraphs() {
   urlParameters+="&interval="+interval;
 
   console.log("URL PARAMETERS: "+urlParameters);
-
+/*
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=blogpost'+urlParameters,
@@ -243,7 +246,7 @@ function drawGraphs() {
       }
 
     }
-  });
+  });*/
 
 
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("admin")!=-1 ) {
@@ -251,6 +254,7 @@ function drawGraphs() {
       type: "GET",
       url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=jbossorg_dm_logs'+urlParameters,
       xhrFields : {withCredentials:true},
+      crossDomain: true,
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(results) {
@@ -402,6 +406,7 @@ $( document ).ready(function() {
   if (!ssoUrl) {
     ssoUrl = 'https://sso.jboss.org';
   }
+  statsConfig.ssoUrl = ssoUrl;
 
   var loginDiv = $( "#login-info" );
   // $.ajax({
@@ -433,7 +438,7 @@ $( document ).ready(function() {
   //   }
   // });
 
-  statsConfig.userRoles=["trusted","admin","provider"];
+  statsConfig.userRoles=["trusted"];
 
       initializeRoleBasedSettings();
 
