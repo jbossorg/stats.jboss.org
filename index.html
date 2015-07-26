@@ -17,6 +17,7 @@
     <script src="js/d3.min.js" charset="utf-8"></script>
     <script src="js/c3.min.js"></script>
     <script src="js/utils.js"></script>
+    <script data-main="js/underscore" src="js/require.js"></script>
     <link href="./select2-3.5.2/select2.css" rel="stylesheet"/>
     <script src="./select2-3.5.2/select2.js"></script>
 
@@ -26,6 +27,7 @@
       <a class="jbdevlogo" href="http://www.jboss.org/projects/about"></a>
       <a class="rhlogo" href="http://www.redhat.com/"></a>
     </div>
+    <a id="excelTest">Download Excel</a>
     <div class="container" id="content">
       <div class="banner">
         <div class="row">
@@ -58,7 +60,7 @@
       </div>
       <div id="info-row" class="row">
         <div class="col-md-12">
-          <div class="alert alert-info alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> Due to a known <a href="https://github.com/searchisko/searchisko/issues/247" >bug</a>, Searchisko integration with SSO currently doesn't work. Please follow these steps in order to use the site:
+          <div class="alert alert-info alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> Due to a known <a href="https://github.com/searchisko/searchisko/issues/247" >bug #247</a>, Searchisko integration with SSO currently doesn't work. Please follow these steps in order to use the site:
             <ol>
               <li>Login to SSO at <span id="infoSsoAddress" /></li>
               <li>Open DCP's authentication status REST URL and refresh it till you get authenticated true and roles will contain "trusted" - <span id="infoServerAuthAddress" /></li>
@@ -316,6 +318,7 @@
       <div class="row">
         <div class="col-md-2 col-md-offset-5">
           <a class="btn btn-primary btn-lg" onClick="if(checkIfServerUrlIsProvided()) drawGraphs();" >Generate graphs</a>
+          <a id="overall-xlsx-button" class="btn btn-default btn-sm" onClick="createMultiSheetXLSXDownload(statsConfig.resultsCollection,'overall-xlsx-button','Overall'); return true;"> <i class="icon-cog"></i> Download overall XLSX</a>
         </div>
       </div>
       </fieldset>
@@ -323,42 +326,60 @@
       <br />
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Download Manager results&nbsp;&nbsp;&nbsp;&nbsp;<a id="dm-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">Download Manager results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="dm-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="dm-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="downloadsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">JIRA results&nbsp;&nbsp;&nbsp;&nbsp;<a id="jira-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">JIRA results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="jira-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="jira-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="jiraDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Blogs results&nbsp;&nbsp;&nbsp;&nbsp;<a id="blogs-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">Blogs results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="blogs-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="blogs-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="blogsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Forums results&nbsp;&nbsp;&nbsp;&nbsp;<a id="forums-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">Forums results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="forums-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="forums-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="forumsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Articles results&nbsp;&nbsp;&nbsp;&nbsp;<a id="articles-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">Articles results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="articles-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="articles-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="articlesDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
       
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">MailingLists results&nbsp;&nbsp;&nbsp;&nbsp;<a id="ml-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a></h3>
+          <h3 class="panel-title">MailingLists results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="ml-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="ml-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
         </div>
         <div id="mailingListDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>

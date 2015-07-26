@@ -1,4 +1,4 @@
-function drawChart(data, divId, title, interval, chartType, csvAnchorId) {
+function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, niceName) {
 
   var graphDateFormat = "%m/%Y";
   var calendarDateFormat = "MM/yyyy";
@@ -133,8 +133,10 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId) {
 
   }
 
-  createCSVDownload(results,csvAnchorId);
+  createCSVDownload(results,csvAnchorId,niceName);
+  createXLSXDownload(results,xlsxAnchorId,niceName);
 
+  return results;
 }
 
 function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
@@ -196,7 +198,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
   return transformedData;
 }
 
-function createCSVDownload(results, csvAnchorId) {
+function createCSVDownload(results, csvAnchorId, niceName) {
 
   var csvContent = '';
   for ( i=0, l=results.length ; i<l ; i++ ) {
@@ -215,7 +217,47 @@ function createCSVDownload(results, csvAnchorId) {
 
   var a = document.getElementById(csvAnchorId);
   a.href = window.URL.createObjectURL(file);
-  a.download = 'results.csv';
+  a.download = niceName+'.csv';
+}
+
+function createXLSXDownload(results, xlsxAnchorId, fileName) {
+ 
+  require(['Excel/Workbook','excel-builder'], function (Workbook,EB) {
+    var resultsWorkbook = new Workbook();
+    var resultsList = resultsWorkbook.createWorksheet({name: fileName});
+ 
+    resultsList.setData(results);
+ 
+    resultsWorkbook.addWorksheet(resultsList);
+ 
+    var processedContent = EB.createFile(resultsWorkbook);
+    $("#"+xlsxAnchorId).attr({
+        download: fileName,
+        href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + processedContent
+    });
+  });
+
+}
+
+function createMultiSheetXLSXDownload(resultsCollection, xlsxAnchorId, fileName) {
+ 
+  require(['Excel/Workbook','excel-builder'], function (Workbook,EB) {
+    var resultsWorkbook = new Workbook();
+    for (var resultsName in resultsCollection) {
+      if (resultsCollection.hasOwnProperty(resultsName)) {
+        var resultsList = resultsWorkbook.createWorksheet({name: resultsName});
+        resultsList.setData(resultsCollection[resultsName]);
+        resultsWorkbook.addWorksheet(resultsList);
+      }
+    }
+
+    var processedContent = EB.createFile(resultsWorkbook);
+    $("#"+xlsxAnchorId).attr({
+        download: fileName,
+        href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + processedContent
+    });
+  });
+
 }
 
 function getQueryVariable(variable) {
