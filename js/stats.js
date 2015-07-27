@@ -408,7 +408,7 @@ $( document ).ready(function() {
   if (!ssoUrl) {
     ssoUrl = 'https://sso.jboss.org';
   }
-  statsConfig.ssoUrl = ssoUrl;
+  statsConfig.ssoUrl = ssoUrl+'/login';
 
   var loginDiv = $( "#login-info" );
   // $.ajax({

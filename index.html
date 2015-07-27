@@ -315,9 +315,11 @@
         -->
       </div>
       <div class="row">
-        <div class="col-md-2 col-md-offset-5">
+        <div class="col-md-2" >
+          <a id="overall-xlsx-button"  class="btn btn-default btn-sm" onClick="createMultiSheetXLSXDownload(statsConfig.resultsCollection,'overall-xlsx-button','Overall'); return true;"> <i class="icon-cog"></i> Download overall XLSX</a>
+        </div>
+        <div class="col-md-2 col-md-offset-3">
           <a class="btn btn-primary btn-lg" onClick="if(checkIfServerUrlIsProvided()) drawGraphs();" >Generate graphs</a>
-          <a id="overall-xlsx-button" class="btn btn-default btn-sm" onClick="createMultiSheetXLSXDownload(statsConfig.resultsCollection,'overall-xlsx-button','Overall'); return true;"> <i class="icon-cog"></i> Download overall XLSX</a>
         </div>
       </div>
       </fieldset>

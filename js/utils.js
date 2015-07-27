@@ -240,7 +240,12 @@ function createXLSXDownload(results, xlsxAnchorId, fileName) {
 }
 
 function createMultiSheetXLSXDownload(resultsCollection, xlsxAnchorId, fileName) {
- 
+
+  if ( $.isEmptyObject(resultsCollection) ) {
+    alert('You need to generate results first.');
+    return false;
+  }
+
   require(['Excel/Workbook','excel-builder'], function (Workbook,EB) {
     var resultsWorkbook = new Workbook();
     for (var resultsName in resultsCollection) {
@@ -252,10 +257,11 @@ function createMultiSheetXLSXDownload(resultsCollection, xlsxAnchorId, fileName)
     }
 
     var processedContent = EB.createFile(resultsWorkbook);
-    $("#"+xlsxAnchorId).attr({
-        download: fileName,
-        href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + processedContent
-    });
+    //$("#"+xlsxAnchorId).attr({
+    //    download: fileName,
+    //    href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + processedContent
+    //});
+    window.location.href = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + processedContent;
   });
 
 }
