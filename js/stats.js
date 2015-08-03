@@ -43,7 +43,7 @@ function initializeRoleBasedSettings() {
   }
 
   $( "#info-row" ).show();
-  $( "#infoSsoAddress" ).html('<a href="'+statsConfig.ssoUrl+'" target="_blank" >'+statsConfig.ssoUrl+'</a>');
+  $( "#infoSsoAddress" ).html('<a href="'+statsConfig.ssoUrl+'" >SSO server</a>');
   $( "#infoServerAuthAddress" ).html('<a href="'+statsConfig.serverUrl+'/v2/rest/auth/status?roles=a" target="_blank" >'+statsConfig.serverUrl+'/v2/rest/auth/status</a>')
   // if(statsConfig.userRoles==null) {
   //   $( "#info-row" ).show();
@@ -177,11 +177,33 @@ function drawGraphs() {
       var forumsDivRef = $('#forumsDiv');
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forums']=drawChart(results.aggregations.firstLevel.buckets,'forumsDiv','Number of forum threads.',
-          interval, presentationRadioVal,'forums-csv-button','forums-xlsx-button','Jive Forums');
+        statsConfig.resultsCollection['Jive Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsDiv','Number of forum threads.',
+          interval, presentationRadioVal,'forums-csv-button','forums-xlsx-button','Jive Forum New Threads');
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for forum threads report.</h3>');
+      }
+
+    }
+  });
+
+  var additionalCommentsParams = '&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCommentsParams,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var forumsDivRef = $('#forumCommentsDiv');
+      forumsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Thread Comments']=drawChart(results.aggregations.firstLevel.buckets,'forumCommentsDiv','Number of forum thread comments.',
+          interval, presentationRadioVal,'forums-comments-csv-button','forums-comments-xlsx-button','Jive Forum Thread Comments');
+      } else {
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for forum threads comments report.</h3>');
       }
 
     }
@@ -198,8 +220,29 @@ function drawGraphs() {
       var articlesDivRef = $('#articlesDiv');
       articlesDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Articles']=drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of articles.',
-          interval, presentationRadioVal,'articles-csv-button','articles-xlsx-button','Jive Articles');
+        statsConfig.resultsCollection['New Jive Articles']=drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of new articles.',
+          interval, presentationRadioVal,'articles-csv-button','articles-xlsx-button','New Jive Articles');
+      } else {
+        articlesDivRef.empty();
+        articlesDivRef.html('<h3>No results for articles report.</h3>');
+      }
+
+    }
+  });
+
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=article'+urlParameters+additionalCommentsParams,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var articlesDivRef = $('#articlesCommentsDiv');
+      articlesDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['New Jive Articles Comments']=drawChart(results.aggregations.firstLevel.buckets,'articlesCommentsDiv','Number of new articles comments.',
+          interval, presentationRadioVal,'articles-comments-csv-button','articles-comments-xlsx-button','New Jive Articles Comments');
       } else {
         articlesDivRef.empty();
         articlesDivRef.html('<h3>No results for articles report.</h3>');
@@ -219,17 +262,39 @@ function drawGraphs() {
       var jiraDivRef = $('#jiraDiv');
       jiraDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['JIRA']=drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of jira issues.',
-          interval, presentationRadioVal,'jira-csv-button','jira-xlsx-button','JIRA');
+        statsConfig.resultsCollection['JIRA New Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of new jira issues.',
+          interval, presentationRadioVal,'jira-csv-button','jira-xlsx-button','JIRA New Issues');
       } else {
         jiraDivRef.empty();
-        jiraDivRef.html('<h3>No results for JIRA report.</h3>');
+        jiraDivRef.html('<h3>No results for new JIRA issues report.</h3>');
       }
 
     }
   });
 
+  var additionalJiraResolvedParams = '&date_field=resolutiondate&employee_field=assignee.red_hat.employee&employee_path_field=assignee.red_hat&author_field=assignee.sys_contributor&author_path_field=assignee';
   $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=issue'+urlParameters+additionalJiraResolvedParams,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var jiraDivRef = $('#jiraResolvedDiv');
+      jiraDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['JIRA Resolved Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraResolvedDiv','Number of resolved jira issues.',
+          interval, presentationRadioVal,'jira-resolved-csv-button','jira-resolved-xlsx-button','JIRA Resolved Issues');
+      } else {
+        jiraDivRef.empty();
+        jiraDivRef.html('<h3>No results for new JIRA issues report.</h3>');
+      }
+
+    }
+  });
+
+  /*$.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=mailing_list_message'+urlParameters,
     xhrFields : {withCredentials:true},
@@ -248,7 +313,7 @@ function drawGraphs() {
       }
 
     }
-  });
+  });*/
 
 
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
@@ -408,7 +473,7 @@ $( document ).ready(function() {
   if (!ssoUrl) {
     ssoUrl = 'https://sso.jboss.org';
   }
-  statsConfig.ssoUrl = ssoUrl+'/login';
+  statsConfig.ssoUrl = ssoUrl+'/login?service='+encodeURIComponent(window.location.href);
 
   var loginDiv = $( "#login-info" );
   // $.ajax({

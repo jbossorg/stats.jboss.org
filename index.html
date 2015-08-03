@@ -59,9 +59,9 @@
       </div>
       <div id="info-row" class="row">
         <div class="col-md-12">
-          <div class="alert alert-info alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> Due to a known <a href="https://github.com/searchisko/searchisko/issues/247" >bug #247</a>, Searchisko integration with SSO currently doesn't work. Please follow these steps in order to use the site:
+          <div class="alert alert-danger alert-dismissible"> <button class="close" data-dismiss="alert" type="button">×</button> Due to a known <a href="https://github.com/searchisko/searchisko/issues/247" >bug #247</a>, Searchisko integration with SSO currently doesn't work. Please follow these steps in order to use the site:
             <ol>
-              <li>Login to SSO at <span id="infoSsoAddress" /></li>
+              <li>Login to <span id="infoSsoAddress" /></li>
               <li>Open DCP's authentication status REST URL and refresh it till you get authenticated true and roles will contain "trusted" - <span id="infoServerAuthAddress" /></li>
               <li>Choose any statistics criteria below and click 'Generate graphs' button</li>
             </ol>
@@ -337,12 +337,22 @@
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">JIRA results&nbsp;&nbsp;&nbsp;&nbsp;
+          <h3 class="panel-title">New JIRA issues results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="jira-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="jira-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
           </h3>
         </div>
         <div id="jiraDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
+      </div>
+
+      <div class="panel panel-success" style="visibility: hidden;">
+        <div class="panel-heading">
+          <h3 class="panel-title">Resolved JIRA issues results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="jira-resolved-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="jira-resolved-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
+        </div>
+        <div id="jiraResolvedDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
 
       <div class="panel panel-success" style="visibility: hidden;">
@@ -357,7 +367,7 @@
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Forums results&nbsp;&nbsp;&nbsp;&nbsp;
+          <h3 class="panel-title">Forums new threads results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
           </h3>
@@ -367,12 +377,32 @@
 
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
-          <h3 class="panel-title">Articles results&nbsp;&nbsp;&nbsp;&nbsp;
+          <h3 class="panel-title">Forums thread comments results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="forums-comments-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="forums-comments-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
+        </div>
+        <div id="forumCommentsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
+      </div>
+
+      <div class="panel panel-success" style="visibility: hidden;">
+        <div class="panel-heading">
+          <h3 class="panel-title">New articles results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="articles-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="articles-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
           </h3>
         </div>
         <div id="articlesDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
+      </div>
+
+      <div class="panel panel-success" style="visibility: hidden;">
+        <div class="panel-heading">
+          <h3 class="panel-title">New articles comments results&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="articles-comments-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+            <a id="articles-comments-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+          </h3>
+        </div>
+        <div id="articlesCommentsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
       
       <div class="panel panel-success" style="visibility: hidden;">
