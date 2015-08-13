@@ -209,6 +209,72 @@ function drawGraphs() {
     }
   });
 
+  var additionalQuestionParam = '&is_question_thread_check=true';
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalQuestionParam,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var forumsDivRef = $('#forumsQuestionDiv');
+      forumsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Question Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsQuestionDiv','Number of forum question threads.',
+          interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','Jive Forum Question Threads');
+      } else {
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for forum question threads report.</h3>');
+      }
+
+    }
+  });
+
+  var additionalHelpfulAnswerParam = '&is_helpful_answer_question_check=true&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalHelpfulAnswerParam,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var forumsDivRef = $('#forumsHelpfulDiv');
+      forumsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Helpful Answers']=drawChart(results.aggregations.firstLevel.buckets,'forumsHelpfulDiv','Number of forum helpful answers.',
+          interval, presentationRadioVal,'forums-helpful-csv-button','forums-helpful-xlsx-button','Jive Forum Helpful Answers');
+      } else {
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for forum helpful answers report.</h3>');
+      }
+
+    }
+  });
+
+  var additionalCorrectAnswerParam = '&is_correct_answer_question_check=true&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCorrectAnswerParam,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var forumsDivRef = $('#forumsCorrectDiv');
+      forumsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Correct Answers']=drawChart(results.aggregations.firstLevel.buckets,'forumsCorrectDiv','Number of forum correct answers.',
+          interval, presentationRadioVal,'forums-correct-csv-button','forums-correct-xlsx-button','Jive Forum Correct Answers');
+      } else {
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for forum helpful answers report.</h3>');
+      }
+
+    }
+  });
+
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=article'+urlParameters,
