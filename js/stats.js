@@ -147,6 +147,27 @@ function drawGraphs() {
 
   $.ajax({
     type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=rht_user_profile'+urlParameters,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var blogsDivRef = $('#rhtUserProfileDiv');
+      blogsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['rhtUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'rhtUserProfileDiv','Number of RHD registered users.',
+          interval, presentationRadioVal,'rhtUserProfile-csv-button','rhtUserProfile-xlsx-button','RHD registered users');
+      } else {
+        blogsDivRef.empty();
+        blogsDivRef.html('<h3>No results for blogs posts report.</h3>');
+      }
+
+    }
+  });
+
+  $.ajax({
+    type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=blogpost'+urlParameters,
     xhrFields : {withCredentials:true},
     contentType: "application/json; charset=utf-8",
