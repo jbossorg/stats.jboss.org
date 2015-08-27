@@ -147,7 +147,7 @@ function drawGraphs() {
 
   $.ajax({
     type: "GET",
-    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=rht_user_profile'+urlParameters,
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=rht_user_profile'+urlParameters,
     xhrFields : {withCredentials:true},
     contentType: "application/json; charset=utf-8",
     dataType: "json",
