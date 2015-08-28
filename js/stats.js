@@ -87,6 +87,10 @@ function drawGraphs() {
         urlParameters+="&sys_contributor_aggregation=true"; break;
       case "perProject" : 
         urlParameters+="&sys_project_aggregation=true"; break;
+      case "perCountry" :
+        urlParameters+="&country_aggregation=true"; break;
+      case "perCompany" :
+        urlParameters+="&company_aggretation=true"; break;
     }
 
   }
