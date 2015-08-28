@@ -90,7 +90,7 @@ function drawGraphs() {
       case "perCountry" :
         urlParameters+="&country_aggregation=true"; break;
       case "perCompany" :
-        urlParameters+="&company_aggretation=true"; break;
+        urlParameters+="&company_aggregation=true"; break;
     }
 
   }
