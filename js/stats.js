@@ -106,7 +106,7 @@ function drawGraphs() {
         urlParameters+="&from_date="+fromDateField.val()+"T00:00:00.000Z";
       }
       if (toDateField.val()) {
-        urlParameters+="&to_date="+toDateField.val()+"T00:00:00.000Z";
+        urlParameters+="&to_date="+toDateField.val()+"T23:59:59.999Z";
       }
 
     }
