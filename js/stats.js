@@ -160,11 +160,32 @@ function drawGraphs() {
       var blogsDivRef = $('#rhtUserProfileDiv');
       blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['rhtUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'rhtUserProfileDiv','Number of RHD registered users.',
+        statsConfig.resultsCollection['rhtUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'rhtUserProfileDiv','Number of developers.redhat.com registered users.',
           interval, presentationRadioVal,'rhtUserProfile-csv-button','rhtUserProfile-xlsx-button','RHD registered users');
       } else {
         blogsDivRef.empty();
-        blogsDivRef.html('<h3>No results for blogs posts report.</h3>');
+        blogsDivRef.html('<h3>No results for developers.redhat.com registrations.</h3>');
+      }
+
+    }
+  });
+
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=jbossorg_contributor_profile'+urlParameters,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var blogsDivRef = $('#jbdUserProfileDiv');
+      blogsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['jbdUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'jbdUserProfileDiv','Number of www.jboss.org registered users.',
+          interval, presentationRadioVal,'jbdUserProfile-csv-button','rhtUserProfile-xlsx-button','JBoss Developer registered users');
+      } else {
+        blogsDivRef.empty();
+        blogsDivRef.html('<h3>No results for www.jboss.org registrations.</h3>');
       }
 
     }
