@@ -182,7 +182,7 @@ function drawGraphs() {
       blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['jbdUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'jbdUserProfileDiv','Number of www.jboss.org registered users.',
-          interval, presentationRadioVal,'jbdUserProfile-csv-button','rhtUserProfile-xlsx-button','JBoss Developer registered users');
+          interval, presentationRadioVal,'jbdUserProfile-csv-button','jbdUserProfile-xlsx-button','JBoss Developer registered users');
       } else {
         blogsDivRef.empty();
         blogsDivRef.html('<h3>No results for www.jboss.org registrations.</h3>');
