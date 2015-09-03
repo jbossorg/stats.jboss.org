@@ -112,7 +112,8 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
         x: 'Time',
         xFormat: graphDateFormat,
         columns: results,
-        type: 'area-spline',
+        //type: 'area-spline',
+        type: 'bar',
         groups: [ collections ]
       },
       axis: {
