@@ -1,4 +1,4 @@
-function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, niceName) {
+function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, statsDiv, niceName) {
 
   var graphDateFormat = "%m/%Y";
   var calendarDateFormat = "MM/yyyy";
@@ -135,6 +135,7 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
 
   createCSVDownload(results,csvAnchorId,niceName);
   createXLSXDownload(results,xlsxAnchorId,niceName);
+  generateDataStatistics(results,statsDiv);
 
   return results;
 }
@@ -237,6 +238,32 @@ function createXLSXDownload(results, xlsxAnchorId, fileName) {
     });
   });
 
+}
+
+function generateDataStatistics( results, statsDiv ) {
+
+  var sum=0;
+  var count=0;
+  var max=Number.MIN_VALUE;
+  var min=Number.MAX_VALUE;
+  for ( i=1, l=results.length ; i<l ; i++ ) {
+    for( j=1, k=results[i].length ; j<k ; j++ ) {
+      sum=sum+results[i][j];
+      count = count+1;
+      if(results[i][j]>max) {
+        max = results[i][j];
+      }
+      if(results[i][j]<min) {
+        min = results[i][j];
+      }
+    }
+  }
+  if(count!=0) {
+    $("#"+statsDiv).html('&nbsp;&nbsp;Max: '+max+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Min: '
+      +min+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Avg: '+sum/count);
+  } else {
+    $("#"+statsDiv).html('');
+  }
 }
 
 function createMultiSheetXLSXDownload(resultsCollection, xlsxAnchorId, fileName) {
