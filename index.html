@@ -335,29 +335,35 @@
       </fieldset>
       </form>
       <br />
+      
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
           <h3 class="panel-title">developers.redhat.com registrations&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="rhtUserProfile-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="rhtUserProfile-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="rhtUserProfileStats"></span>
           </h3>
         </div>
         <div id="rhtUserProfileDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
+
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
           <h3 class="panel-title">www.jboss.org registrations&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="jbdUserProfile-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="jbdUserProfile-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="jbdUserProfileStats"></span>
           </h3>
         </div>
         <div id="jbdUserProfileDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
       </div>
+
       <div class="panel panel-success" style="visibility: hidden;">
         <div class="panel-heading">
           <h3 class="panel-title">Download Manager results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="dm-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="dm-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="downloadsStats"></span>
           </h3>
         </div>
         <div id="downloadsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -368,6 +374,7 @@
           <h3 class="panel-title">New JIRA issues results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="jira-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="jira-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="jiraStats"></span>
           </h3>
         </div>
         <div id="jiraDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -378,6 +385,7 @@
           <h3 class="panel-title">Resolved JIRA issues results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="jira-resolved-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="jira-resolved-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="jiraResolvedStats"></span>
           </h3>
         </div>
         <div id="jiraResolvedDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -388,6 +396,7 @@
           <h3 class="panel-title">Blogs results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="blogs-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="blogs-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="blogsStats"></span>
           </h3>
         </div>
         <div id="blogsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -398,6 +407,7 @@
           <h3 class="panel-title">Forums new threads results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="forumsStats"></span>
           </h3>
         </div>
         <div id="forumsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -408,6 +418,7 @@
           <h3 class="panel-title">Forums thread comments results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-comments-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-comments-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="forumCommentsStats"></span>
           </h3>
         </div>
         <div id="forumCommentsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -418,6 +429,7 @@
           <h3 class="panel-title">Forums question threads results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-question-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-question-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="forumsQuestionStats"></span>
           </h3>
         </div>
         <div id="forumsQuestionDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -428,6 +440,7 @@
           <h3 class="panel-title">Forums helpful answers results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-helpful-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-helpful-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="forumsHelpfulStats"></span>
           </h3>
         </div>
         <div id="forumsHelpfulDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -438,6 +451,7 @@
           <h3 class="panel-title">Forums correct answers results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="forums-correct-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="forums-correct-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="forumsCorrectStats"></span>
           </h3>
         </div>
         <div id="forumsCorrectDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -448,6 +462,7 @@
           <h3 class="panel-title">New articles results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="articles-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="articles-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="articlesStats"></span>
           </h3>
         </div>
         <div id="articlesDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -458,6 +473,7 @@
           <h3 class="panel-title">New articles comments results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="articles-comments-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="articles-comments-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="articlesCommentsStats"></span>
           </h3>
         </div>
         <div id="articlesCommentsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
@@ -468,6 +484,7 @@
           <h3 class="panel-title">MailingLists results&nbsp;&nbsp;&nbsp;&nbsp;
             <a id="ml-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
             <a id="ml-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+            <span id="mailingListStats"></span>
           </h3>
         </div>
         <div id="mailingListDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
