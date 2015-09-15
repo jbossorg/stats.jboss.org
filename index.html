@@ -105,73 +105,53 @@
                         </div>
                       </div>
                     </div>
-                    <br />
-                    <div class="form-group"> 
-                      <label class="col-md-4 control-label" for="fromDate">Date from: </label>
-                      <div class="controls col-md-4">
-                        <input class="form-control" type="text" id="fromDate" />
+
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label class="col-md-4 control-label" for="product">Projects or Products: </label>
+                    <div class="controls col-md-8">
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="product" value="all" checked />All
+                        </label>
                       </div>
-                      <div class="controls col-md-4">
-                        <a class="btn btn-danger" onClick="$('#fromDate')[0].value='';">
-                          <i class="icon-trash icon-lg"></i> Clear </a>
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="product" value="false"  />Only projects
+                        </label>
+                      </div>
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="product" value="true" />Only products
+                        </label>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="col-md-4 control-label" for="toDate">Date to: </label>
-                      <div class="controls col-md-4">
-                        <input type="text" class="form-control" id="toDate">
+                    
+                  </div>
+
+                  <div class="form-group col-md-4" id="createdByDiv"  >
+                    <label class="col-md-4 control-label" for="employee">Created by: </label>
+                    <div class="controls col-md-8">
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="employee" value="anyone" checked />Anyone
+                        </label>
                       </div>
-                      <div class="controls col-md-4">
-                        <a class="btn btn-danger" onClick="$('#toDate')[0].value='';">
-                          <i class="icon-trash icon-lg"></i> Clear </a>
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="employee" value="true"  />Red Hat employee
+                        </label>
                       </div>
+                      <div class="radio" >
+                        <label>
+                          <input type="radio" name="employee" value="false" />Non-redhatter
+                        </label>
+                      </div>
+                      
                     </div>
                   </div>
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="form-group col-md-6">
-                        <label class="col-md-4 control-label" for="product">Projects or Products: </label>
-                        <div class="controls col-md-8">
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="product" value="all" checked />All
-                            </label>
-                          </div>
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="product" value="false"  />Only projects
-                            </label>
-                          </div>
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="product" value="true" />Only products
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group col-md-6" id="createdByDiv"  >
-                        <label class="col-md-4 control-label" for="employee">Created by: </label>
-                        <div class="controls col-md-8">
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="employee" value="anyone" checked />Anyone
-                            </label>
-                          </div>
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="employee" value="true"  />Red Hat employee
-                            </label>
-                          </div>
-                          <div class="radio" >
-                            <label>
-                              <input type="radio" name="employee" value="false" />Non-redhatter
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <br />
-                    <div class="row">
+                      
                       <!--<div class="form-group">
                         <label class="col-md-4 control-label" for="employee">Projects/products filter: </label>
                         <div class="controls col-md-6">
@@ -192,12 +172,68 @@
                            <i class="icon-trash icon-lg"></i> Clear </a>
                         </div>
                       </div>-->
-                    </div> 
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-4"> 
+                      <label class="col-md-4 control-label" for="fromDate">Date from: </label>
+                      <div class="controls col-md-4">
+                        <input class="form-control" type="text" id="fromDate" />
+                      </div>
+                      <div class="controls col-md-4">
+                        <a class="btn btn-danger" onClick="$('#fromDate')[0].value='';">
+                          <i class="icon-trash icon-lg"></i> Clear </a>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label class="col-md-4 control-label" for="toDate">Date to: </label>
+                      <div class="controls col-md-4">
+                        <input type="text" class="form-control" id="toDate">
+                      </div>
+                      <div class="controls col-md-4">
+                        <a class="btn btn-danger" onClick="$('#toDate')[0].value='';">
+                          <i class="icon-trash icon-lg"></i> Clear </a>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label class="col-md-4 control-label" for="timezone">Timezone: </label>
+                      <div class="controls col-md-4">
+                        <select class="form-control" id="timezone">
+                          <option value="-12">-12h</option>
+                          <option value="-11">-11h</option>
+                          <option value="-10">-10h</option>
+                          <option value="-9">-9h</option>
+                          <option value="-8">-8h</option>
+                          <option value="-7">-7h</option>
+                          <option value="-6">-6h</option>
+                          <option value="-5">-5h</option>
+                          <option value="-4">-4h</option>
+                          <option value="-3">-3h</option>
+                          <option value="-2">-2h</option>
+                          <option value="-1">-1h</option>
+                          <option value="0" selected>0h</option>
+                          <option value="1">+1h</option>
+                          <option value="2">+2h</option>
+                          <option value="3">+3h</option>
+                          <option value="4">+4h</option>
+                          <option value="5">+5h</option>
+                          <option value="6">+6h</option>
+                          <option value="7">+7h</option>
+                          <option value="8">+8h</option>
+                          <option value="9">+9h</option>
+                          <option value="10">+10h</option>
+                          <option value="11">+11h</option>
+                          <option value="12">+12h</option>
+                        </select>
+                      </div>
+                      <div class="controls col-md-4">
+                        <a class="btn btn-danger" onClick="$('#timezone')[0].value='0';">
+                          <i class="icon-trash icon-lg"></i> Clear </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
         <div class="panel panel-default">
           <div class="panel-heading">

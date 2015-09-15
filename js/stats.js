@@ -72,6 +72,7 @@ function drawGraphs() {
   var projectSelectedArr = $("#projectsSelect").select2("data");
   var authorsSelectedArr = $("#authorsSelect").select2("data");
   var interval = $('input[name=interval]:checked', '#settings').val();
+  var timezone = $('#timezone option:selected', '#settings').val();
 
   if (bucketRadioVal!='off') {
 
@@ -144,6 +145,7 @@ function drawGraphs() {
   }
   
   urlParameters+="&interval="+interval;
+  urlParameters+="&timezone_offset="+timezone;
 
   console.log("URL PARAMETERS: "+urlParameters);
   statsConfig.resultsCollection={};
@@ -161,7 +163,7 @@ function drawGraphs() {
       blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['rhtUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'rhtUserProfileDiv','Number of developers.redhat.com registered users.',
-          interval, presentationRadioVal,'rhtUserProfile-csv-button','rhtUserProfile-xlsx-button','rhtUserProfileStats','RHD registered users');
+          interval, presentationRadioVal,'rhtUserProfile-csv-button','rhtUserProfile-xlsx-button','rhtUserProfileStats','RHD new registrations');
       } else {
         blogsDivRef.empty();
         blogsDivRef.html('<h3>No results for developers.redhat.com registrations.</h3>');
@@ -182,7 +184,7 @@ function drawGraphs() {
       blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['jbdUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'jbdUserProfileDiv','Number of www.jboss.org registered users.',
-          interval, presentationRadioVal,'jbdUserProfile-csv-button','jbdUserProfile-xlsx-button','jbdUserProfileStats','JBoss Developer registered users');
+          interval, presentationRadioVal,'jbdUserProfile-csv-button','jbdUserProfile-xlsx-button','jbdUserProfileStats','JBD new registrations');
       } else {
         blogsDivRef.empty();
         blogsDivRef.html('<h3>No results for www.jboss.org registrations.</h3>');
@@ -354,7 +356,7 @@ function drawGraphs() {
       articlesDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['New Jive Articles Comments']=drawChart(results.aggregations.firstLevel.buckets,'articlesCommentsDiv','Number of new articles comments.',
-          interval, presentationRadioVal,'articles-comments-csv-button','articles-comments-xlsx-button','articlesCommentsStats','New Jive Articles Comments');
+          interval, presentationRadioVal,'articles-comments-csv-button','articles-comments-xlsx-button','articlesCommentsStats','Jive Articles New Comments');
       } else {
         articlesDivRef.empty();
         articlesDivRef.html('<h3>No results for articles report.</h3>');
@@ -442,7 +444,7 @@ function drawGraphs() {
         downloadsDivRef.parent().css('visibility','visible');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['DownloadManager']=drawChart(results.aggregations.firstLevel.buckets,'downloadsDiv','Number of downloads.',
-            interval, presentationRadioVal,'dm-csv-button','dm-xlsx-button','dmStats','DownloadManager');
+            interval, presentationRadioVal,'dm-csv-button','dm-xlsx-button','dmStats','DownloadManager downloads');
         } else {
           downloadsDivRef.empty();
           downloadsDivRef.html('<h3>No results for mailing list report.</h3>');
