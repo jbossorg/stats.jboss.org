@@ -324,3 +324,15 @@ function checkIfServerUrlIsProvided() {
   }
   return true;
 }
+
+function generateTimezoneString( offsetValue ) {
+
+  var timezoneStr = ''+Math.abs(offsetValue);
+  if(timezoneStr.length==1) timezoneStr='0'+timezoneStr;
+  if(offsetValue>0) {
+    timezoneStr = encodeURIComponent('+')+ timezoneStr;
+  } else {
+    timezoneStr = "-"+timezoneStr;
+  }
+  return timezoneStr;
+}

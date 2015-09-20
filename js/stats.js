@@ -104,10 +104,10 @@ function drawGraphs() {
       urlParameters+="&date_range_check=true";
 
       if (fromDateField.val()) {
-        urlParameters+="&from_date="+fromDateField.val()+"T00:00:00.000Z";
+        urlParameters+="&from_date="+fromDateField.val()+"T00:00:00.000"+generateTimezoneString(timezone);
       }
       if (toDateField.val()) {
-        urlParameters+="&to_date="+toDateField.val()+"T23:59:59.999Z";
+        urlParameters+="&to_date="+toDateField.val()+"T23:59:59.999"+generateTimezoneString(timezone);
       }
 
     }
@@ -150,7 +150,6 @@ function drawGraphs() {
   console.log("URL PARAMETERS: "+urlParameters);
   statsConfig.resultsCollection={};
 
-
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=rht_user_profile'+urlParameters,
@@ -169,7 +168,20 @@ function drawGraphs() {
         blogsDivRef.html('<h3>No results for developers.redhat.com registrations.</h3>');
       }
 
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      console.log(jqXHR);
+    },
+    statusCode: {
+      500: function() {
+        alert( "500" );
+      },
+      403: function() {
+        alert("403")
+      }
     }
+  }).done(function() {
+    $( this ).addClass( "done" );
   });
 
   $.ajax({
@@ -190,6 +202,9 @@ function drawGraphs() {
         blogsDivRef.html('<h3>No results for www.jboss.org registrations.</h3>');
       }
 
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      console.log(jqXHR);
     }
   });
 
