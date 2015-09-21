@@ -30,6 +30,28 @@ function switchAvailablePresentationOptions(turnOnMultibucket) {
 
 }
 
+function cleanGraphs() {
+
+  var panels = $("#graphs .panel-body");
+  for (var i=0;i<panels.length;i++) {
+    panels[i].innerHTML="";
+  }
+
+  var headerStats = $("#graphs span");
+  for (var i=0;i<headerStats.length;i++) {
+    headerStats[i].innerHTML="";
+  }
+
+  var fileDownloads = $("#graphs a");
+  for (var i=0;i<fileDownloads.length;i++) {
+    fileDownloads[i].href="#";
+  }
+
+  $("#overall-xlsx-button").href="#";
+
+  statsConfig.resultsCollection={};
+}
+
 function initializeRoleBasedSettings() {
 
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
