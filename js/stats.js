@@ -94,7 +94,7 @@ function drawGraphs() {
   var projectSelectedArr = $("#projectsSelect").select2("data");
   var authorsSelectedArr = $("#authorsSelect").select2("data");
   var interval = $('input[name=interval]:checked', '#settings').val();
-  var timezone = $('#timezone option:selected', '#settings').val();
+  var timezone = $('input[name=timezone]:checked', '#settings').val();
 
   if (bucketRadioVal!='off') {
 
@@ -126,10 +126,18 @@ function drawGraphs() {
       urlParameters+="&date_range_check=true";
 
       if (fromDateField.val()) {
-        urlParameters+="&from_date="+fromDateField.val()+"T00:00:00.000"+generateTimezoneString(timezone);
+        if(timezone=='America/New_York') {
+          urlParameters+="&from_date="+moment.tz(fromDateField.val(), "America/New_York").toISOString();
+        } else {
+          urlParameters+="&from_date="+fromDateField.val()+'T00:00:00.000Z';
+        }
       }
       if (toDateField.val()) {
-        urlParameters+="&to_date="+toDateField.val()+"T23:59:59.999"+generateTimezoneString(timezone);
+        if(timezone=='America/New_York') {
+          urlParameters+="&to_date="+moment.tz(toDateField.val()+'T23:59:59.999', "America/New_York").toISOString();
+        } else {
+          urlParameters+="&to_date="+toDateField.val()+'T23:59:59.999Z';
+        }
       }
 
     }
@@ -484,7 +492,7 @@ function drawGraphs() {
             interval, presentationRadioVal,'dm-csv-button','dm-xlsx-button','dmStats','DownloadManager downloads');
         } else {
           downloadsDivRef.empty();
-          downloadsDivRef.html('<h3>No results for mailing list report.</h3>');
+          downloadsDivRef.html('<h3>No downloads results for DownloadManager report.</h3>');
         }
 
       }
