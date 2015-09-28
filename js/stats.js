@@ -478,7 +478,7 @@ function drawGraphs() {
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
     $.ajax({
       type: "GET",
-      url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=jbossorg_dm_logs'+urlParameters,
+      url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?sct=jbossorg_dm_logs'+urlParameters+additionalDownloadManagerParams,
       xhrFields : {withCredentials:true},
       crossDomain: true,
       contentType: "application/json; charset=utf-8",
