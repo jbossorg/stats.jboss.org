@@ -474,7 +474,7 @@ function drawGraphs() {
     }
   });*/
 
-  var additionalDownloadManagerParams='&company_field=sys_authors.company&country_field=sys_authors.country';
+  var additionalDownloadManagerParams='&company_field=sys_authors.company&country_field=sys_authors.country&author_field=username';
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
     $.ajax({
       type: "GET",
