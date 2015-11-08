@@ -110,6 +110,8 @@ function drawGraphs() {
         urlParameters+="&sys_contributor_aggregation=true"; break;
       case "perProject" : 
         urlParameters+="&sys_project_aggregation=true"; break;
+      case "perProjectEmployee" : 
+        urlParameters+="&sys_project_aggregation=true&sys_project_employee_aggregation=true"; break;
       case "perCountry" :
         urlParameters+="&country_aggregation=true"; break;
       case "perCompany" :
@@ -151,6 +153,7 @@ function drawGraphs() {
       urlParameters+="&is_employee_check=true&is_employee="+employeeRadioVal;
     }
 
+    /* FILTERING OVER SPECIFIC PROJECT NAMES IS CURRENTLY DISABED AND NOT SUPPORTED BY THE QUERY
     if (projectSelectedArr.length>0 ) {
 
       urlParameters += "&project_names_filter";
@@ -159,8 +162,9 @@ function drawGraphs() {
         urlParameters += "&sys_projects="+projectSelectedArr[idx].id;
       }
 
-    }
+    }*/
     
+    /* FILTERING OVER SPECIFIC CONTRIBUTORS IS CURRENTLY DISABLED AND NOT SUPPORTED BY THE QUERY
     if (authorsSelectedArr.length>0 ) {
 
       urlParameters += "&sys_contributors_filter";
@@ -170,7 +174,7 @@ function drawGraphs() {
         urlParameters += "&sys_contributors="+authorsSelectedArr[idx].id;
       }
 
-    }
+    }*/
 
   }
   
@@ -198,20 +202,7 @@ function drawGraphs() {
         blogsDivRef.html('<h3>No results for developers.redhat.com registrations.</h3>');
       }
 
-    },
-    error: function( jqXHR, textStatus, errorThrown ) {
-      console.log(jqXHR);
-    },
-    statusCode: {
-      500: function() {
-        alert( "500" );
-      },
-      403: function() {
-        alert("403")
-      }
     }
-  }).done(function() {
-    $( this ).addClass( "done" );
   });
 
   $.ajax({
@@ -232,9 +223,6 @@ function drawGraphs() {
         blogsDivRef.html('<h3>No results for www.jboss.org registrations.</h3>');
       }
 
-    },
-    error: function( jqXHR, textStatus, errorThrown ) {
-      console.log(jqXHR);
     }
   });
 
@@ -259,28 +247,60 @@ function drawGraphs() {
     }
   });
 
+  var additionalDevForumsParams = '&is_development_space=true';
+  additionalDevForumsParams += '&development_space=true';
   $.ajax({
     type: "GET",
-    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters,
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalDevForumsParams,
     xhrFields : {withCredentials:true},
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function(results) {
       console.log(results);
-      var forumsDivRef = $('#forumsDiv');
+      var forumsDivRef = $('#devForumsDiv');
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsDiv','Number of forum threads.',
-          interval, presentationRadioVal,'forums-csv-button','forums-xlsx-button','forumsStats','Jive Forum New Threads');
+        statsConfig.resultsCollection['Jive Development Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'devForumsDiv','Number of development forum threads.',
+          interval, presentationRadioVal,'forums-dev-csv-button','forums-dev-xlsx-button','devForumsStats','Jive Development Forum New Threads');
       } else {
         forumsDivRef.empty();
-        forumsDivRef.html('<h3>No results for forum threads report.</h3>');
+        forumsDivRef.html('<h3>No results for development forum threads report.</h3>');
       }
 
     }
   });
 
-  var additionalCommentsParams = '&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  var additionalUserForumsParams = '&is_development_space=true';
+  additionalUserForumsParams += '&development_space=false';
+  $.ajax({
+    type: "GET",
+    url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalUserForumsParams,
+    xhrFields : {withCredentials:true},
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(results) {
+      console.log(results);
+      var forumsDivRef = $('#userForumsDiv');
+      forumsDivRef.parent().css('visibility','visible');
+      if (results.aggregations.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive User Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'userForumsDiv','Number of user forum threads.',
+          interval, presentationRadioVal,'forums-user-csv-button','forums-user-xlsx-button','userForumsStats','Jive User Forum New Threads');
+      } else {
+        forumsDivRef.empty();
+        forumsDivRef.html('<h3>No results for user forum threads report.</h3>');
+      }
+
+    }
+  });
+
+  var additionalCommentsParams = '&main_nesting=true';
+  additionalCommentsParams += '&main_nesting_path=sys_comments';
+  additionalCommentsParams += '&date_field=sys_comments.comment_created';
+  additionalCommentsParams += '&employee_field=sys_comments.comment_author.red_hat.employee';
+  additionalCommentsParams += '&employee_path_field=sys_comments.comment_author.red_hat';
+  additionalCommentsParams += '&author_field=sys_comments.comment_author.sys_contributor';
+  additionalCommentsParams += '&author_path_field=sys_comments';
+  additionalCommentsParams += '&product_field=sys_comments.product';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCommentsParams,
@@ -291,9 +311,10 @@ function drawGraphs() {
       console.log(results);
       var forumsDivRef = $('#forumCommentsDiv');
       forumsDivRef.parent().css('visibility','visible');
-      if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forum Thread Comments']=drawChart(results.aggregations.firstLevel.buckets,'forumCommentsDiv','Number of forum thread comments.',
-          interval, presentationRadioVal,'forums-comments-csv-button','forums-comments-xlsx-button','forumCommentsStats','Jive Forum Thread Comments');
+      if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Thread Comments']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
+          'forumCommentsDiv','Number of forum thread comments.', interval, presentationRadioVal,'forums-comments-csv-button','forums-comments-xlsx-button',
+          'forumCommentsStats','Jive Forum Thread Comments');
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for forum threads comments report.</h3>');
@@ -324,7 +345,16 @@ function drawGraphs() {
     }
   });
 
-  var additionalHelpfulAnswerParam = '&is_helpful_answer_question_check=true&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  var additionalHelpfulAnswerParam = '&is_helpful_answer_question_check=true';
+  additionalHelpfulAnswerParam += '&date_field=sys_comments.comment_created';
+  additionalHelpfulAnswerParam += '&employee_field=sys_comments.comment_author.red_hat.employee';
+  additionalHelpfulAnswerParam += '&employee_path_field=sys_comments.comment_author.red_hat';
+  additionalHelpfulAnswerParam += '&author_field=sys_comments.comment_author.sys_contributor';
+  additionalHelpfulAnswerParam += '&author_path_field=sys_comments';
+  additionalHelpfulAnswerParam += '&main_nesting=true';
+  additionalHelpfulAnswerParam += '&main_nesting_path=sys_comments';
+  additionalHelpfulAnswerParam += '&product_field=sys_comments.product';
+
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalHelpfulAnswerParam,
@@ -335,9 +365,10 @@ function drawGraphs() {
       console.log(results);
       var forumsDivRef = $('#forumsHelpfulDiv');
       forumsDivRef.parent().css('visibility','visible');
-      if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forum Helpful Answers']=drawChart(results.aggregations.firstLevel.buckets,'forumsHelpfulDiv','Number of forum helpful answers.',
-          interval, presentationRadioVal,'forums-helpful-csv-button','forums-helpful-xlsx-button','forumsHelpfulStats','Jive Forum Helpful Answers');
+      if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Helpful Answers']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
+          'forumsHelpfulDiv','Number of forum helpful answers.', interval, presentationRadioVal,'forums-helpful-csv-button',
+          'forums-helpful-xlsx-button','forumsHelpfulStats','Jive Forum Helpful Answers');
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for forum helpful answers report.</h3>');
@@ -346,7 +377,15 @@ function drawGraphs() {
     }
   });
 
-  var additionalCorrectAnswerParam = '&is_correct_answer_question_check=true&date_field=sys_comments.comment_created&employee_field=sys_comments.comment_author.red_hat.employee&employee_path_field=sys_comments.comment_author.red_hat&author_field=sys_comments.comment_author.sys_contributor&author_path_field=sys_comments.comment_author';
+  var additionalCorrectAnswerParam = '&is_correct_answer_question_check=true';
+  additionalCorrectAnswerParam += '&date_field=sys_comments.comment_created';
+  additionalCorrectAnswerParam += '&employee_field=sys_comments.comment_author.red_hat.employee';
+  additionalCorrectAnswerParam += '&employee_path_field=sys_comments.comment_author.red_hat';
+  additionalCorrectAnswerParam += '&author_field=sys_comments.comment_author.sys_contributor';
+  additionalCorrectAnswerParam += '&author_path_field=sys_comments';
+  additionalCorrectAnswerParam += '&main_nesting=true';
+  additionalCorrectAnswerParam += '&main_nesting_path=sys_comments';
+  additionalCorrectAnswerParam += '&product_field=sys_comments.product';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCorrectAnswerParam,
@@ -357,9 +396,10 @@ function drawGraphs() {
       console.log(results);
       var forumsDivRef = $('#forumsCorrectDiv');
       forumsDivRef.parent().css('visibility','visible');
-      if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forum Correct Answers']=drawChart(results.aggregations.firstLevel.buckets,'forumsCorrectDiv','Number of forum correct answers.',
-          interval, presentationRadioVal,'forums-correct-csv-button','forums-correct-xlsx-button','forumsCorrectStats','Jive Forum Correct Answers');
+      if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['Jive Forum Correct Answers']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
+          'forumsCorrectDiv','Number of forum correct answers.', interval, presentationRadioVal,'forums-correct-csv-button',
+          'forums-correct-xlsx-button','forumsCorrectStats','Jive Forum Correct Answers');
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for forum helpful answers report.</h3>');
@@ -399,9 +439,10 @@ function drawGraphs() {
       console.log(results);
       var articlesDivRef = $('#articlesCommentsDiv');
       articlesDivRef.parent().css('visibility','visible');
-      if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['New Jive Articles Comments']=drawChart(results.aggregations.firstLevel.buckets,'articlesCommentsDiv','Number of new articles comments.',
-          interval, presentationRadioVal,'articles-comments-csv-button','articles-comments-xlsx-button','articlesCommentsStats','Jive Articles New Comments');
+      if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
+        statsConfig.resultsCollection['New Jive Articles Comments']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
+          'articlesCommentsDiv','Number of new articles comments.', interval, presentationRadioVal,'articles-comments-csv-button',
+          'articles-comments-xlsx-button','articlesCommentsStats','Jive Articles New Comments');
       } else {
         articlesDivRef.empty();
         articlesDivRef.html('<h3>No results for articles report.</h3>');
@@ -431,7 +472,11 @@ function drawGraphs() {
     }
   });
 
-  var additionalJiraResolvedParams = '&date_field=resolutiondate&employee_field=assignee.red_hat.employee&employee_path_field=assignee.red_hat&author_field=assignee.sys_contributor&author_path_field=assignee';
+  var additionalJiraResolvedParams = '&date_field=resolutiondate';
+  additionalJiraResolvedParams += '&employee_field=assignee.red_hat.employee';
+  additionalJiraResolvedParams += '&employee_path_field=assignee.red_hat';
+  additionalJiraResolvedParams += '&author_field=assignee.sys_contributor';
+  additionalJiraResolvedParams += '&author_path_field=assignee';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=issue'+urlParameters+additionalJiraResolvedParams,
@@ -474,7 +519,9 @@ function drawGraphs() {
     }
   });*/
 
-  var additionalDownloadManagerParams='&company_field=sys_authors.company&country_field=sys_authors.country&author_field=username';
+  var additionalDownloadManagerParams='&company_field=sys_authors.company';
+  additionalDownloadManagerParams += '&country_field=sys_authors.country';
+  additionalDownloadManagerParams += '&author_field=username';
   if (statsConfig.userRoles && statsConfig.userRoles.indexOf("trusted")!=-1 ) {
     $.ajax({
       type: "GET",

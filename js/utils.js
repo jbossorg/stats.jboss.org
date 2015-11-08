@@ -27,7 +27,7 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
       data: {
         x: 'Time',
         xFormat: graphDateFormat,
-        columns: results,
+        columns: results[0],
         type: 'spline'
       },
       axis: {
@@ -52,7 +52,7 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
       data: {
         x: 'Time',
         xFormat: graphDateFormat,
-        columns: results,
+        columns: results[0],
         type: 'bar'
       },
       axis: {
@@ -77,7 +77,7 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
       data: {
         x: 'Time',
         xFormat: graphDateFormat,
-        columns: results,
+        columns: results[0],
         type: 'spline'
       },
       axis: {
@@ -102,8 +102,8 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
 
     var collections = [];
     // Collecting data collections names
-    for ( i=1, l=results.length ; i<l ; i++ ) {
-      collections[collections.length]=results[i][0];
+    for ( i=1, l=results[0].length ; i<l ; i++ ) {
+      collections[collections.length]=results[0][i][0];
     }
 
     var chart = c3.generate({
@@ -111,7 +111,7 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
       data: {
         x: 'Time',
         xFormat: graphDateFormat,
-        columns: results,
+        columns: results[0],
         //type: 'area-spline',
         type: 'bar',
         groups: [ collections ]
@@ -134,9 +134,9 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
 
   }
 
-  createCSVDownload(results,csvAnchorId,niceName);
-  createXLSXDownload(results,xlsxAnchorId,niceName);
-  generateDataStatistics(results,statsDiv);
+  createCSVDownload(results[1],csvAnchorId,niceName);
+  createXLSXDownload(results[1],xlsxAnchorId,niceName);
+  generateDataStatistics(results[0],statsDiv);
 
   return results;
 }
@@ -144,17 +144,28 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
 function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
 
   var transformedData = [];
+  var transformedDataExt = [];
 
   if (nestedBuckets) {
 
     var xAxis = ['Time'];
     var yAxis = {};
 
+    // Additional axis for 3D employee/non-employee data
+    var xAxisExt = ['Time'];
+    var yAxisExt = {};
+
     for ( i=0, l=data.length ; i<l ; i++ ) {
 
-      xAxis[xAxis.length]=$.format.date(new Date(data[i].key),dateFormat);
+      var formattedDate=$.format.date(new Date(data[i].key),dateFormat);
+
+      xAxis[xAxis.length] = formattedDate;
+      xAxisExt[xAxisExt.length] = formattedDate+' - overall';
+      xAxisExt[xAxisExt.length] = formattedDate+' - non-employee';
+      xAxisExt[xAxisExt.length] = formattedDate+' - employee';
 
       var correctLevelBuckets;
+
       if( data[i].secondLevel.thirdLevel === undefined ) {
         correctLevelBuckets = data[i].secondLevel.buckets;
       } else {
@@ -164,14 +175,44 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
       for( j=0, k=correctLevelBuckets.length ; j<k ; j++ ) {
 
         var yArray;
+        var yArrayExt;
+
         if( yAxis[correctLevelBuckets[j].key] === undefined ) {
-          yArray=Array.apply(null, new Array(data.length+1)).map(Number.prototype.valueOf,0);
+
+          yArray=Array.apply( null, new Array(data.length+1) ).map(Number.prototype.valueOf,0);
           yArray[0]=correctLevelBuckets[j].key;
           yAxis[correctLevelBuckets[j].key]=yArray;
+
+          yArrayExt=Array.apply( null, new Array(3*data.length+1) ).map(Number.prototype.valueOf,0);
+          yArrayExt[0]=correctLevelBuckets[j].key;
+          yAxisExt[correctLevelBuckets[j].key]=yArrayExt;
+
         } else {
+
           yArray = yAxis[correctLevelBuckets[j].key];
+          yArrayExt = yAxisExt[correctLevelBuckets[j].key];
+
         }
+
         yArray[i+1]=correctLevelBuckets[j].doc_count;
+        yArrayExt[i*3+1]=correctLevelBuckets[j].doc_count;
+
+        if( correctLevelBuckets[j].splitting_level != undefined ) {
+          var splittingBuckets = correctLevelBuckets[j].splitting_level.thirdLevel.buckets;
+
+          // Manually putting 0 for True and False in case one of them is missing.
+          yArrayExt[i*3+2]=0;
+          yArrayExt[i*3+3]=0;
+
+          for( m=0, n=splittingBuckets.length ; m<n ; m++ ) {
+            if(splittingBuckets[m].key=="F") {
+              yArrayExt[i*3+2]=splittingBuckets[m].doc_count;
+            }
+            if(splittingBuckets[m].key=="T") {
+              yArrayExt[i*3+3]=splittingBuckets[m].doc_count;
+            }
+          }
+        }
 
       }
     }
@@ -179,6 +220,11 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     transformedData[0]=xAxis;
     for(var key in yAxis) {
       transformedData[transformedData.length]=yAxis[key];
+    }
+
+    transformedDataExt[0]=xAxisExt;
+    for(var key in yAxisExt) {
+      transformedDataExt[transformedDataExt.length]=yAxisExt[key];
     }
 
   } else {
@@ -195,9 +241,9 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     }
   }
   
-  
-  console.log(transformedData);
-  return transformedData;
+  var returnedArr = [ transformedData, transformedDataExt ];
+  console.log( returnedArr );
+  return returnedArr;
 }
 
 function createCSVDownload(results, csvAnchorId, niceName) {

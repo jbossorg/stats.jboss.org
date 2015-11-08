@@ -286,6 +286,11 @@
                         </div>
                         <div class="radio" >
                           <label>
+                            <input type="radio" name="bucket" value="perProjectEmployee" onClick="switchAvailablePresentationOptions(true);" />Per each project/product per employee status
+                          </label>
+                        </div>
+                        <div class="radio" >
+                          <label>
                             <input type="radio" name="bucket" value="perCompany" onClick="switchAvailablePresentationOptions(true);" />Per each company
                           </label>
                         </div>
@@ -453,13 +458,24 @@
 
         <div class="panel panel-success" style="visibility: hidden;">
           <div class="panel-heading">
-            <h3 class="panel-title">Forums new threads results&nbsp;&nbsp;&nbsp;&nbsp;
-              <a id="forums-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
-              <a id="forums-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
-              <span id="forumsStats"></span>
+            <h3 class="panel-title">Forums new development threads results&nbsp;&nbsp;&nbsp;&nbsp;
+              <a id="forums-dev-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+              <a id="forums-dev-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+              <span id="devForumsStats"></span>
             </h3>
           </div>
-          <div id="forumsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
+          <div id="devForumsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
+        </div>
+
+        <div class="panel panel-success" style="visibility: hidden;">
+          <div class="panel-heading">
+            <h3 class="panel-title">Forums new user threads results&nbsp;&nbsp;&nbsp;&nbsp;
+              <a id="forums-user-csv-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download CSV</a>
+              <a id="forums-user-xlsx-button" class="btn btn-default btn-sm" > <i class="icon-cog"></i> Download XLSX</a>
+              <span id="userForumsStats"></span>
+            </h3>
+          </div>
+          <div id="userForumsDiv" class="panel-body" style="width: 95%; height:  600px;margin-bottom:20px;"></div>
         </div>
 
         <div class="panel panel-success" style="visibility: hidden;">
