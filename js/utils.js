@@ -1,4 +1,4 @@
-function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, statsDiv, niceName) {
+function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, statsDiv, niceName, detailedResults) {
 
   var graphDateFormat = "%m/%Y";
   var calendarDateFormat = "MM/yyyy";
@@ -134,8 +134,13 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
 
   }
 
-  createCSVDownload(results[1],csvAnchorId,niceName);
-  createXLSXDownload(results[1],xlsxAnchorId,niceName);
+  if(detailedResults) {
+    createCSVDownload(results[1],csvAnchorId,niceName);
+    createXLSXDownload(results[1],xlsxAnchorId,niceName);
+  } else {
+    createCSVDownload(results[0],csvAnchorId,niceName);
+    createXLSXDownload(results[0],xlsxAnchorId,niceName);
+  }
   generateDataStatistics(results[0],statsDiv);
 
   return results;
