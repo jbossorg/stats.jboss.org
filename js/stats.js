@@ -325,6 +325,7 @@ function drawGraphs() {
   });
 
   var additionalQuestionParam = '&is_question_thread_check=true';
+  additionalQuestionParam += '&is_development_space=false';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalQuestionParam,
@@ -336,11 +337,11 @@ function drawGraphs() {
       var forumsDivRef = $('#forumsQuestionDiv');
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
-        statsConfig.resultsCollection['Jive Forum Question Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsQuestionDiv','Number of forum question threads.',
-          interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','forumsQuestionStats','Jive Forum Question Threads', true);
+        statsConfig.resultsCollection['Jive User Forum Question Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsQuestionDiv','Number of user forum question threads.',
+          interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','forumsQuestionStats','Jive User Forum Question Threads', true);
       } else {
         forumsDivRef.empty();
-        forumsDivRef.html('<h3>No results for forum question threads report.</h3>');
+        forumsDivRef.html('<h3>No results for user forum question threads report.</h3>');
       }
 
     }
