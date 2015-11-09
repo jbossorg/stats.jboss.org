@@ -238,7 +238,7 @@ function drawGraphs() {
       blogsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['Planet']=drawChart(results.aggregations.firstLevel.buckets,'blogsDiv','Number of blog posts.',
-          interval, presentationRadioVal,'blogs-csv-button','blogs-xlsx-button','blogsStats','Planet', false);
+          interval, presentationRadioVal,'blogs-csv-button','blogs-xlsx-button','blogsStats','Planet', true);
       } else {
         blogsDivRef.empty();
         blogsDivRef.html('<h3>No results for blogs posts report.</h3>');
@@ -261,7 +261,7 @@ function drawGraphs() {
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['Jive Development Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'devForumsDiv','Number of development forum threads.',
-          interval, presentationRadioVal,'forums-dev-csv-button','forums-dev-xlsx-button','devForumsStats','Jive Development Forum New Threads', false);
+          interval, presentationRadioVal,'forums-dev-csv-button','forums-dev-xlsx-button','devForumsStats','Jive Development Forum New Threads', true);
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for development forum threads report.</h3>');
@@ -284,7 +284,7 @@ function drawGraphs() {
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['Jive User Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'userForumsDiv','Number of user forum threads.',
-          interval, presentationRadioVal,'forums-user-csv-button','forums-user-xlsx-button','userForumsStats','Jive User Forum New Threads', false);
+          interval, presentationRadioVal,'forums-user-csv-button','forums-user-xlsx-button','userForumsStats','Jive User Forum New Threads', true);
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for user forum threads report.</h3>');
@@ -337,7 +337,7 @@ function drawGraphs() {
       forumsDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['Jive Forum Question Threads']=drawChart(results.aggregations.firstLevel.buckets,'forumsQuestionDiv','Number of forum question threads.',
-          interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','forumsQuestionStats','Jive Forum Question Threads', false);
+          interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','forumsQuestionStats','Jive Forum Question Threads', true);
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for forum question threads report.</h3>');
@@ -423,7 +423,7 @@ function drawGraphs() {
       articlesDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['New Jive Articles']=drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of new articles.',
-          interval, presentationRadioVal,'articles-csv-button','articles-xlsx-button','articlesStats','New Jive Articles', false);
+          interval, presentationRadioVal,'articles-csv-button','articles-xlsx-button','articlesStats','New Jive Articles', true);
       } else {
         articlesDivRef.empty();
         articlesDivRef.html('<h3>No results for articles report.</h3>');
@@ -466,7 +466,7 @@ function drawGraphs() {
       jiraDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['JIRA New Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of new jira issues.',
-          interval, presentationRadioVal,'jira-csv-button','jira-xlsx-button','jiraStats','JIRA New Issues', false);
+          interval, presentationRadioVal,'jira-csv-button','jira-xlsx-button','jiraStats','JIRA New Issues', true);
       } else {
         jiraDivRef.empty();
         jiraDivRef.html('<h3>No results for new JIRA issues report.</h3>');
@@ -492,7 +492,7 @@ function drawGraphs() {
       jiraDivRef.parent().css('visibility','visible');
       if (results.aggregations.firstLevel.buckets.length) {
         statsConfig.resultsCollection['JIRA Resolved Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraResolvedDiv','Number of resolved jira issues.',
-          interval, presentationRadioVal,'jira-resolved-csv-button','jira-resolved-xlsx-button','jiraResolvedStats','JIRA Resolved Issues', false);
+          interval, presentationRadioVal,'jira-resolved-csv-button','jira-resolved-xlsx-button','jiraResolvedStats','JIRA Resolved Issues', true);
       } else {
         jiraDivRef.empty();
         jiraDivRef.html('<h3>No results for new JIRA issues report.</h3>');
