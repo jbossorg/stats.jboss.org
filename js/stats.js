@@ -301,6 +301,7 @@ function drawGraphs() {
   additionalCommentsParams += '&author_field=sys_comments.comment_author.sys_contributor';
   additionalCommentsParams += '&author_path_field=sys_comments';
   additionalCommentsParams += '&product_field=sys_comments.product';
+  additionalCommentsParams += '&sys_project_field=sys_comments.sys_project';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCommentsParams,
@@ -354,6 +355,7 @@ function drawGraphs() {
   additionalHelpfulAnswerParam += '&main_nesting=true';
   additionalHelpfulAnswerParam += '&main_nesting_path=sys_comments';
   additionalHelpfulAnswerParam += '&product_field=sys_comments.product';
+  additionalHelpfulAnswerParam += '&sys_project_field=sys_comments.sys_project';
 
   $.ajax({
     type: "GET",
@@ -386,6 +388,7 @@ function drawGraphs() {
   additionalCorrectAnswerParam += '&main_nesting=true';
   additionalCorrectAnswerParam += '&main_nesting_path=sys_comments';
   additionalCorrectAnswerParam += '&product_field=sys_comments.product';
+  additionalCorrectAnswerParam += '&sys_project_field=sys_comments.sys_project';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=forumthread'+urlParameters+additionalCorrectAnswerParam,
