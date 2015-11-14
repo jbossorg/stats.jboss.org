@@ -200,7 +200,11 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
         }
 
         yArray[i+1]=correctLevelBuckets[j].doc_count;
-        yArrayExt[i*3+1]=correctLevelBuckets[j].doc_count;
+        if( correctLevelBuckets[j].splitting_level === undefined ) {
+          yArrayExt[i*3+1]=correctLevelBuckets[j].doc_count;
+        } else {
+          yArrayExt[i*3+1]=correctLevelBuckets[j].splitting_level.doc_count;
+        }
 
         if( correctLevelBuckets[j].splitting_level != undefined ) {
           var splittingBuckets = correctLevelBuckets[j].splitting_level.thirdLevel.buckets;

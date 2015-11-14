@@ -299,7 +299,7 @@ function drawGraphs() {
       if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
         statsConfig.resultsCollection['Jive User Forum Helpful Answers']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
           'forumsHelpfulDiv','Number of user forum helpful answers.', interval, presentationRadioVal,'forums-helpful-csv-button',
-          'forums-helpful-xlsx-button','forumsHelpfulStats','Jive Forum Helpful Answers', true);
+          'forums-helpful-xlsx-button','forumsHelpfulStats','Jive User Forum Helpful Answers', true);
       } else {
         forumsDivRef.empty();
         forumsDivRef.html('<h3>No results for user forum helpful answers report.</h3>');
