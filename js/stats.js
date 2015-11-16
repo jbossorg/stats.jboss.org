@@ -468,10 +468,10 @@ function drawGraphs() {
   });
 
   var additionalJiraResolvedParams = '&date_field=resolutiondate';
-  additionalJiraResolvedParams += '&employee_field=assignee.red_hat.employee';
-  additionalJiraResolvedParams += '&employee_path_field=assignee.red_hat';
-  additionalJiraResolvedParams += '&author_field=assignee.sys_contributor';
-  additionalJiraResolvedParams += '&author_path_field=assignee';
+  additionalJiraResolvedParams += '&employee_field=resolution_author.red_hat.employee';
+  additionalJiraResolvedParams += '&employee_path_field=resolution_author.red_hat';
+  additionalJiraResolvedParams += '&author_field=resolution_author.sys_contributor';
+  additionalJiraResolvedParams += '&author_path_field=resolution_author';
   $.ajax({
     type: "GET",
     url: statsConfig.serverUrl+'/v2/rest/search/'+statsConfig.query+'?st=issue'+urlParameters+additionalJiraResolvedParams,
