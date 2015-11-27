@@ -283,7 +283,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var blogsDivRef = $('#rhtUserProfileDiv');
-        blogsDivRef.parent().css('visibility','visible');
+        blogsDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['rhtUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'rhtUserProfileDiv','Number of developers.redhat.com registered users.',
             interval, presentationRadioVal,'rhtUserProfile-csv-button','rhtUserProfile-xlsx-button','rhtUserProfileStats','RHD new registrations', false);
@@ -296,7 +296,7 @@ function drawGraphs() {
     });
   } else {
     var blogsDivRef = $('#rhtUserProfileDiv');
-    blogsDivRef.parent().css('visibility','hidden');
+    blogsDivRef.parent().css('display','none');
   }
 
   if( renderedGraphs.indexOf('jboss-developer')!=-1 ) {
@@ -309,7 +309,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var blogsDivRef = $('#jbdUserProfileDiv');
-        blogsDivRef.parent().css('visibility','visible');
+        blogsDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['jbdUserProfile']=drawChart(results.aggregations.firstLevel.buckets,'jbdUserProfileDiv','Number of www.jboss.org registered users.',
             interval, presentationRadioVal,'jbdUserProfile-csv-button','jbdUserProfile-xlsx-button','jbdUserProfileStats','JBD new registrations', false);
@@ -322,7 +322,7 @@ function drawGraphs() {
     });
   } else {
     var blogsDivRef = $('#jbdUserProfileDiv');
-    blogsDivRef.parent().css('visibility','hidden');
+    blogsDivRef.parent().css('display','none');
   }
 
   if( renderedGraphs.indexOf('blogs')!=-1 ) {
@@ -335,7 +335,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var blogsDivRef = $('#blogsDiv');
-        blogsDivRef.parent().css('visibility','visible');
+        blogsDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Planet']=drawChart(results.aggregations.firstLevel.buckets,'blogsDiv','Number of blog posts.',
             interval, presentationRadioVal,'blogs-csv-button','blogs-xlsx-button','blogsStats','Planet', detailedResults);
@@ -348,7 +348,7 @@ function drawGraphs() {
     });
   } else {
     var blogsDivRef = $('#blogsDiv');
-    blogsDivRef.parent().css('visibility','hidden');
+    blogsDivRef.parent().css('display','none');
   }
 
   var additionalQuestionParam = '&is_question_thread_check=true';
@@ -364,7 +364,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var forumsDivRef = $('#forumsQuestionDiv');
-        forumsDivRef.parent().css('visibility','visible');
+        forumsDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Jive User Forum Questions']=drawChart(results.aggregations.firstLevel.buckets,'forumsQuestionDiv','Number of user forum question threads.',
             interval, presentationRadioVal,'forums-question-csv-button','forums-question-xlsx-button','forumsQuestionStats','Jive User Forum Questions', detailedResults);
@@ -377,7 +377,7 @@ function drawGraphs() {
     });
   } else {
     var forumsDivRef = $('#forumsQuestionDiv');
-    forumsDivRef.parent().css('visibility','hidden');
+    forumsDivRef.parent().css('display','none');
   }
 
   // user forum helpful answers
@@ -404,7 +404,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var forumsDivRef = $('#forumsHelpfulDiv');
-        forumsDivRef.parent().css('visibility','visible');
+        forumsDivRef.parent().css('display','block');
         if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Jive User Forum Helpful Answers']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
             'forumsHelpfulDiv','Number of user forum helpful answers.', interval, presentationRadioVal,'forums-helpful-csv-button',
@@ -418,7 +418,7 @@ function drawGraphs() {
     });
   } else {
     var forumsDivRef = $('#forumsHelpfulDiv');
-    forumsDivRef.parent().css('visibility','hidden');
+    forumsDivRef.parent().css('display','none');
   }
 
 
@@ -446,7 +446,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var forumsDivRef = $('#forumsCorrectDiv');
-        forumsDivRef.parent().css('visibility','visible');
+        forumsDivRef.parent().css('display','block');
         if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Jive User Forum Correct Answers']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
             'forumsCorrectDiv','Number of user forum correct answers.', interval, presentationRadioVal,'forums-correct-csv-button',
@@ -460,7 +460,7 @@ function drawGraphs() {
     });
   } else {
     var forumsDivRef = $('#forumsCorrectDiv');
-    forumsDivRef.parent().css('visibility','hidden');
+    forumsDivRef.parent().css('display','none');
   }
 
   // Dev forums threads
@@ -477,7 +477,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var forumsDivRef = $('#devForumsDiv');
-        forumsDivRef.parent().css('visibility','visible');
+        forumsDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Jive Development Forum New Threads']=drawChart(results.aggregations.firstLevel.buckets,'devForumsDiv','Number of development forum threads.',
             interval, presentationRadioVal,'forums-dev-csv-button','forums-dev-xlsx-button','devForumsStats','Jive Development Forum New Threads', detailedResults);
@@ -490,7 +490,7 @@ function drawGraphs() {
     });
   } else {
     var forumsDivRef = $('#devForumsDiv');
-    forumsDivRef.parent().css('visibility','hidden');
+    forumsDivRef.parent().css('display','none');
   }
 
   // dev forums replies
@@ -516,7 +516,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var forumsDivRef = $('#forumCommentsDiv');
-        forumsDivRef.parent().css('visibility','visible');
+        forumsDivRef.parent().css('display','block');
         if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
           statsConfig.resultsCollection['Jive Development Forum Replies']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
             'forumCommentsDiv','Number of development forum replies.', interval, presentationRadioVal,'forums-comments-csv-button','forums-comments-xlsx-button',
@@ -530,7 +530,7 @@ function drawGraphs() {
     });
   } else {
     var forumsDivRef = $('#forumCommentsDiv');
-    forumsDivRef.parent().css('visibility','hidden');
+    forumsDivRef.parent().css('display','none');
   }
 
   if( renderedGraphs.indexOf('new-articles')!=-1 ) {
@@ -543,7 +543,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var articlesDivRef = $('#articlesDiv');
-        articlesDivRef.parent().css('visibility','visible');
+        articlesDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['New Jive Articles']=drawChart(results.aggregations.firstLevel.buckets,'articlesDiv','Number of new articles.',
             interval, presentationRadioVal,'articles-csv-button','articles-xlsx-button','articlesStats','New Jive Articles', detailedResults);
@@ -556,7 +556,7 @@ function drawGraphs() {
     });
   } else {
     var articlesDivRef = $('#articlesDiv');
-    articlesDivRef.parent().css('visibility','hidden');
+    articlesDivRef.parent().css('display','none');
   }
 
   if( renderedGraphs.indexOf('new-articles-comments')!=-1 ) {
@@ -569,7 +569,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var articlesDivRef = $('#articlesCommentsDiv');
-        articlesDivRef.parent().css('visibility','visible');
+        articlesDivRef.parent().css('display','block');
         if (results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets.length) {
           statsConfig.resultsCollection['New Jive Articles Comments']=drawChart(results.aggregations.nested_main_level.aggregations_filtering.firstLevel.buckets,
             'articlesCommentsDiv','Number of new articles comments.', interval, presentationRadioVal,'articles-comments-csv-button',
@@ -583,7 +583,7 @@ function drawGraphs() {
     });
   } else {
     var articlesDivRef = $('#articlesCommentsDiv');
-    articlesDivRef.parent().css('visibility','hidden');
+    articlesDivRef.parent().css('display','none');
   }
 
   if( renderedGraphs.indexOf('new-jira')!=-1 ) {
@@ -596,7 +596,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var jiraDivRef = $('#jiraDiv');
-        jiraDivRef.parent().css('visibility','visible');
+        jiraDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['JIRA New Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraDiv','Number of new jira issues.',
             interval, presentationRadioVal,'jira-csv-button','jira-xlsx-button','jiraStats','JIRA New Issues', detailedResults);
@@ -609,7 +609,7 @@ function drawGraphs() {
     });
   } else {
     var jiraDivRef = $('#jiraDiv');
-    jiraDivRef.parent().css('visibility','hidden');
+    jiraDivRef.parent().css('display','none');
   }
 
   var additionalJiraResolvedParams = '&date_field=resolutiondate';
@@ -628,7 +628,7 @@ function drawGraphs() {
       success: function(results) {
         console.log(results);
         var jiraDivRef = $('#jiraResolvedDiv');
-        jiraDivRef.parent().css('visibility','visible');
+        jiraDivRef.parent().css('display','block');
         if (results.aggregations.firstLevel.buckets.length) {
           statsConfig.resultsCollection['JIRA Resolved Issues']=drawChart(results.aggregations.firstLevel.buckets,'jiraResolvedDiv','Number of resolved jira issues.',
             interval, presentationRadioVal,'jira-resolved-csv-button','jira-resolved-xlsx-button','jiraResolvedStats','JIRA Resolved Issues', detailedResults);
@@ -641,7 +641,7 @@ function drawGraphs() {
     });
   } else {
     var jiraDivRef = $('#jiraResolvedDiv');
-    jiraDivRef.parent().css('visibility','hidden');
+    jiraDivRef.parent().css('display','none');
   }
 
   /*$.ajax({
@@ -680,7 +680,7 @@ function drawGraphs() {
         success: function(results) {
           console.log(results);
           var downloadsDivRef = $('#downloadsDiv');
-          downloadsDivRef.parent().css('visibility','visible');
+          downloadsDivRef.parent().css('display','block');
           if (results.aggregations.firstLevel.buckets.length) {
             statsConfig.resultsCollection['DownloadManager']=drawChart(results.aggregations.firstLevel.buckets,'downloadsDiv','Number of downloads.',
               interval, presentationRadioVal,'dm-csv-button','dm-xlsx-button','dmStats','DownloadManager downloads', false);
@@ -694,7 +694,7 @@ function drawGraphs() {
     }
   } else {
     var downloadsDivRef = $('#downloadsDiv');
-    downloadsDivRef.parent().css('visibility','hidden');
+    downloadsDivRef.parent().css('display','none');
   }
 
   // $.ajax({
