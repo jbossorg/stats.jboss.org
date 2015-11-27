@@ -115,17 +115,17 @@
                     <div class="controls col-md-8">
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="product" value="all" checked />All
+                          <input type="radio" name="product" value="all" checked onClick="switchAvailableGraphsDependingOnCriteria();" />All
                         </label>
                       </div>
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="product" value="false"  />Only projects
+                          <input type="radio" name="product" value="false" onClick="switchAvailableGraphsDependingOnCriteria();" />Only projects
                         </label>
                       </div>
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="product" value="true" />Only products
+                          <input type="radio" name="product" value="true" onClick="switchAvailableGraphsDependingOnCriteria();" />Only products
                         </label>
                       </div>
                     </div>
@@ -137,17 +137,17 @@
                     <div class="controls col-md-8">
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="employee" value="anyone" checked />Anyone
+                          <input type="radio" name="employee" value="anyone" checked onClick="switchAvailableGraphsDependingOnCriteria();" />Anyone
                         </label>
                       </div>
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="employee" value="true"  />Red Hat employee
+                          <input type="radio" name="employee" value="true" onClick="switchAvailableGraphsDependingOnCriteria();" />Red Hat employee
                         </label>
                       </div>
                       <div class="radio" >
                         <label>
-                          <input type="radio" name="employee" value="false" />Non-redhatter
+                          <input type="radio" name="employee" value="false" onClick="switchAvailableGraphsDependingOnCriteria();" />Non-redhatter
                         </label>
                       </div>
                       
@@ -261,42 +261,42 @@
                       <div class="controls col-md-8">
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="off" checked onClick="switchAvailablePresentationOptions(false);" />Nothing
+                            <input type="radio" name="bucket" value="off" checked onClick="switchAvailablePresentationOptions(false);switchAvailableGraphsDependingOnCriteria();" />Nothing
                           </label>
                         </div>
                         <div class="radio" id="employeeStatusDiv">
                           <label>
-                            <input type="radio" name="bucket" value="employeeStatus" onClick="switchAvailablePresentationOptions(true);" />Red Hat employees vs. non-redhatters
+                            <input type="radio" name="bucket" value="employeeStatus" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Red Hat employees vs. non-redhatters
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="productStatus" onClick="switchAvailablePresentationOptions(true);" />Projects vs. products
+                            <input type="radio" name="bucket" value="productStatus" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Projects vs. products
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="perAuthor" onClick="switchAvailablePresentationOptions(true);" />Per each author
+                            <input type="radio" name="bucket" value="perAuthor" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Per each author
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="perProject" onClick="switchAvailablePresentationOptions(true);" />Per each project/product
+                            <input type="radio" name="bucket" value="perProject" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Per each project/product
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="perProjectEmployee" onClick="switchAvailablePresentationOptions(true);" />Per each project/product per employee status
+                            <input type="radio" name="bucket" value="perProjectEmployee" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Per each project/product per employee status
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="perCompany" onClick="switchAvailablePresentationOptions(true);" />Per each company
+                            <input type="radio" name="bucket" value="perCompany" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Per each company
                           </label>
                         </div>
                         <div class="radio" >
                           <label>
-                            <input type="radio" name="bucket" value="perCountry" onClick="switchAvailablePresentationOptions(true);" />Per each country
+                            <input type="radio" name="bucket" value="perCountry" onClick="switchAvailablePresentationOptions(true);switchAvailableGraphsDependingOnCriteria();" />Per each country
                           </label>
                         </div>
                       </div>
@@ -329,6 +329,100 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><a class="accordion-toggle" data-parent="#accordion2" data-toggle="collapse" href="#collapseThree">Enabled graphs - some graphs may be disabled depending on the criteria set above</a></h4>
+          </div>
+          <div class="panel-collapse collapse in" id="collapseTwo">
+            <div class="panel-body">
+              <div class="form-horizontal">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="redhat-developers" checked>developers.redhat.com registrations
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="jboss-developer" checked>www.jboss.org registrations
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="download-manager" checked>Download Manager
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="new-jira" checked>New JIRA issues
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="resolved-jira" checked>Resolved JIRA issues
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="blogs" checked>Blogs
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="user-forum-questions" checked>User forums questions threads
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="user-forums-helpful" checked>User forums helpful answers
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="user-forums-correct" checked>User forums correct answers
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="development-forums-threads" checked>Development forums threads
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="development-forums-replies" checked>Development forums thread replies
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="new-articles" checked>New articles
+                        </label>
+                      </div>
+                      <div class="checkbox col-xs-12">
+                        <label>
+                          <input name="renderedGraphs" type="checkbox" value="new-articles-comments" checked>New articles comments
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
