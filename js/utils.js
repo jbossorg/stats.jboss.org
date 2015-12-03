@@ -214,10 +214,10 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
           yArrayExt[i*3+3]=0;
 
           for( m=0, n=splittingBuckets.length ; m<n ; m++ ) {
-            if(splittingBuckets[m].key=="F") {
+            if(splittingBuckets[m].key=="non-employee") {
               yArrayExt[i*3+2]=splittingBuckets[m].doc_count;
             }
-            if(splittingBuckets[m].key=="T") {
+            if(splittingBuckets[m].key=="employee") {
               yArrayExt[i*3+3]=splittingBuckets[m].doc_count;
             }
           }
