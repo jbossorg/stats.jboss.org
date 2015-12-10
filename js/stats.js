@@ -242,16 +242,16 @@ function drawGraphs() {
       urlParameters+="&is_employee_check=true&is_employee="+employeeRadioVal;
     }
 
-    /* FILTERING OVER SPECIFIC PROJECT NAMES IS CURRENTLY DISABED AND NOT SUPPORTED BY THE QUERY
+    
     if (projectSelectedArr.length>0 ) {
 
-      urlParameters += "&project_names_filter";
+      urlParameters += "&project_names_filter=true";
 
       for (var idx=0 ; idx < projectSelectedArr.length ; idx++ ) {
         urlParameters += "&sys_projects="+projectSelectedArr[idx].id;
       }
 
-    }*/
+    }
     
     /* FILTERING OVER SPECIFIC CONTRIBUTORS IS CURRENTLY DISABLED AND NOT SUPPORTED BY THE QUERY
     if (authorsSelectedArr.length>0 ) {
@@ -716,13 +716,20 @@ function drawGraphs() {
 
 }
 
-/*
+
 $("#projectsSelect").select2({ 
   "placeholder" : "None selected" ,
   "width" : "100%",
   "multiple" : true,
   "minimumInputLength" : "2",
   query: function (query) {
+
+    if( statsConfig.sys_projects !== undefined ) {
+      var filteredData = filterDataByText(query.term,statsConfig.sys_projects);
+      query.callback(filteredData);
+      return filteredData;
+    }
+
     var data = {results: []};
     var serverUrl = $( "#serverUrl" ).val();
 
@@ -732,9 +739,11 @@ $("#projectsSelect").select2({
 
       // Getting sys_projects
       $.ajax({
-        type: "POST",
-        url: serverUrl+'/v2/rest/sys/es/search/sys_projects/_search?size=5&_source_include=code,name',
-        data: JSON.stringify({
+        type: "GET",
+        url: serverUrl+'/v2/rest/project?size=300',
+        xhrFields : {withCredentials:true},
+        crossDomain: true,
+        /*data: JSON.stringify({
           "query" : {
             "filtered" : {
               "filter" : {
@@ -742,7 +751,7 @@ $("#projectsSelect").select2({
               }
             }
           }
-        }),
+        }),*/
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(results) {
@@ -750,27 +759,28 @@ $("#projectsSelect").select2({
 
           var selectObj = $('#projectsSelect', '#settings')[0];
 
-          if (results.hits.total>0) {
+          if (results.total>0) {
 
-            results.hits.hits.sort(function(a,b) { 
-              return a._source.name.localeCompare(b._source.name);
+            results.hits.sort(function(a,b) { 
+              return a.data.name.localeCompare(b.data.name);
             });
 
-            for (var index = 0 ; index < results.hits.hits.length ; index++ ) {
-              var name = results.hits.hits[index]._source.name;
-              var code = results.hits.hits[index]._source.code;
+            for (var index = 0 ; index < results.hits.length ; index++ ) {
+              var name = results.hits[index].data.name;
+              var code = results.hits[index].data.code;
               name = ( name === undefined || name=='' ? code : name ) ;
               data.results.push({id:code,text: name});
             }
 
+            statsConfig.sys_projects = data;
           }
 
-          query.callback(data);
+          query.callback(filterDataByText(query.term,data));
         }
       });
   }
 });
-
+/*
 $("#authorsSelect").select2({ 
   "placeholder" : "None selected" ,
   "width" : "100%",

@@ -379,3 +379,14 @@ function checkIfServerUrlIsProvided() {
   }
   return true;
 }
+
+function filterDataByText( text , data ) {
+  var filteredData = {results:[]};
+  var re = new RegExp(text,"gi");
+  for (var index = 0 ; index < data.results.length ; index++ ) {
+    if( data.results[index].text.match(re)!=null || data.results[index].id.match(re)!=null ) {
+      filteredData.results.push(data.results[index]);
+    }
+  }
+  return filteredData;
+}
