@@ -161,8 +161,8 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     var yAxisExt = {};
 
     for ( i=0, l=data.length ; i<l ; i++ ) {
-      var tmpDate = new Date(Date.UTC(data[i].key));
-      var formattedDate=$.format.date(tmpDate,dateFormat);
+      var tmpDate = new Date(data[i].key);
+      var formattedDate=$.format.date(tmpDate.getUTCDate(),dateFormat);
 
       xAxis[xAxis.length] = formattedDate;
       xAxisExt[xAxisExt.length] = formattedDate+' - overall';
@@ -244,8 +244,8 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     transformedData[transformedData.length]=yAxis;
 
     for (i = 0; i < data.length; i++) { 
-      var tmpDate = new Date(Date.UTC(data[i].key));
-      var formattedDate = $.format.date(tmpDate,dateFormat);
+      var tmpDate = new Date(data[i].key);
+      var formattedDate = $.format.date(tmpDate.getUTCDate(),dateFormat);
       xAxis[xAxis.length] = formattedDate;
       yAxis[yAxis.length] = data[i].doc_count;
     }
