@@ -161,8 +161,8 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     var yAxisExt = {};
 
     for ( i=0, l=data.length ; i<l ; i++ ) {
-
-      var formattedDate=$.format.date(new Date(data[i].key),dateFormat);
+      var tmpDate = new Date(data[i].key);
+      var formattedDate=$.format.date(tmpDate,dateFormat);
 
       xAxis[xAxis.length] = formattedDate;
       xAxisExt[xAxisExt.length] = formattedDate+' - overall';
