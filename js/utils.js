@@ -245,7 +245,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
 
     for (i = 0; i < data.length; i++) { 
       var tmpDate = new Date(data[i].key);
-      var formattedDate = $.format.date(tmpDate.getUTCDate(),dateFormat);
+      var formattedDate = $.format.date(data[i].key,dateFormat);
       xAxis[xAxis.length] = formattedDate;
       yAxis[yAxis.length] = data[i].doc_count;
     }
