@@ -1,19 +1,19 @@
 function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, statsDiv, niceName, detailedResults) {
 
   var graphDateFormat = "%m/%Y";
-  var calendarDateFormat = "MM/yyyy";
+  var calendarDateFormat = 7;
   switch(interval) {
     case 'year':
       graphDateFormat = "%Y";
-      calendarDateFormat = "yyyy";
+      calendarDateFormat = 4;
       break;
     case 'day':
       graphDateFormat = "%d/%m/%Y";
-      calendarDateFormat = "dd/MM/yyyy";
+      calendarDateFormat = 10;
       break;
     case 'week':
       graphDateFormat = "%d/%m/%Y";
-      calendarDateFormat = "dd/MM/yyyy";
+      calendarDateFormat = 10;
   };
 
   var results;
@@ -162,7 +162,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     var yAxisExt = {};
 
     for ( i=0, l=data.length ; i<l ; i++ ) {
-      var formattedDate=$.format.date(data[i].key+timezoneOffsetInMilliSec,dateFormat);
+      var formattedDate=data[i].key_as_string.substring(0,dateFormat);
 
       xAxis[xAxis.length] = formattedDate;
       xAxisExt[xAxisExt.length] = formattedDate+' - overall';
@@ -244,7 +244,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     transformedData[transformedData.length]=yAxis;
 
     for (i = 0; i < data.length; i++) { 
-      var formattedDate = $.format.date(data[i].key+timezoneOffsetInMilliSec,dateFormat);
+      var formattedDate = data[i].key_as_string.substring(0,dateFormat);
       xAxis[xAxis.length] = formattedDate;
       yAxis[yAxis.length] = data[i].doc_count;
     }
