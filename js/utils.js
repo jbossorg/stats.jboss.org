@@ -1,6 +1,6 @@
 function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnchorId, statsDiv, niceName, detailedResults) {
 
-  var graphDateFormat = "%m/%Y";
+  var graphDateFormat = "%Y-%m";
   var calendarDateFormat = 7;
   switch(interval) {
     case 'year':
@@ -8,11 +8,11 @@ function drawChart(data, divId, title, interval, chartType, csvAnchorId, xlsxAnc
       calendarDateFormat = 4;
       break;
     case 'day':
-      graphDateFormat = "%d/%m/%Y";
+      graphDateFormat = "%Y-%m-%d";
       calendarDateFormat = 10;
       break;
     case 'week':
-      graphDateFormat = "%d/%m/%Y";
+      graphDateFormat = "%Y-%m-%d";
       calendarDateFormat = 10;
   };
 
