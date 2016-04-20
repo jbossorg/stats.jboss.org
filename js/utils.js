@@ -150,7 +150,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
 
   var transformedData = [];
   var transformedDataExt = [];
-  var timezoneOffsetInSec = new Date().getTimezoneOffset()*60;
+  var timezoneOffsetInMilliSec = new Date().getTimezoneOffset()*60*1000;
 
   if (nestedBuckets) {
 
@@ -162,7 +162,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     var yAxisExt = {};
 
     for ( i=0, l=data.length ; i<l ; i++ ) {
-      var formattedDate=$.format.date(data[i].key+timezoneOffsetInSec,dateFormat);
+      var formattedDate=$.format.date(data[i].key+timezoneOffsetInMilliSec,dateFormat);
 
       xAxis[xAxis.length] = formattedDate;
       xAxisExt[xAxisExt.length] = formattedDate+' - overall';
@@ -244,7 +244,7 @@ function transformDataForRenderingChart(data, dateFormat, nestedBuckets) {
     transformedData[transformedData.length]=yAxis;
 
     for (i = 0; i < data.length; i++) { 
-      var formattedDate = $.format.date(data[i].key+timezoneOffsetInSec,dateFormat);
+      var formattedDate = $.format.date(data[i].key+timezoneOffsetInMilliSec,dateFormat);
       xAxis[xAxis.length] = formattedDate;
       yAxis[yAxis.length] = data[i].doc_count;
     }
